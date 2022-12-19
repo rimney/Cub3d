@@ -6,7 +6,7 @@
 #    By: rimney <rimney@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/17 01:48:17 by rimney            #+#    #+#              #
-#    Updated: 2022/12/17 01:57:40 by rimney           ###   ########.fr        #
+#    Updated: 2022/12/18 19:43:36 by rimney           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,8 @@ LIBFTA = Libft/libft.a
 GNL_SRCS = Get_next_line/get_next_line.c \
 			Get_next_line/get_next_line_utils.c \
 
+CC = cc
+FLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 SRCS = parsing.c
 
 
@@ -23,3 +25,9 @@ all : $(LIBFTA)
 $(LIBFTA) :
 	(cd Libft && make)
 
+all : $(NAME)
+
+$(NAME) : $(SRCS)
+	$(CC) $(FLAGS) $(SRCS) $(GNL_SRCS) $(LIBFTA) -o $(NAME)
+	
+	

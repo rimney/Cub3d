@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 17:19:58 by rimney            #+#    #+#             */
-/*   Updated: 2021/11/18 19:02:55 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/18 19:25:33 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
+#include "../Libft/libft.h"
 char	*ft_strdup(const char *s1)
 {
 	int		i;
@@ -21,7 +21,7 @@ char	*ft_strdup(const char *s1)
 	str = malloc(sizeof(char) * (ft_strlen(s1) + 1));
 	if (!str)
 		return (NULL);
-	while (i < ft_strlen(s1))
+	while ((size_t)i < ft_strlen(s1))
 	{
 		str[i] = s1[i];
 		i++;
@@ -59,17 +59,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	return (str);
 }
-
-int	ft_strlen(const char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
