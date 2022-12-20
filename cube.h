@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/20 03:28:43 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/20 15:35:40 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef	struct	s_cube
 	int		C; // 4
 	int		F; // 5
 	int		*files_f;
+	int		Psp; // it contains the ascii value of the direction character
 	int		MapHeight;
 	int		MapWidth;
 	char	**Map;

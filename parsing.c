@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/20 03:34:27 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/20 16:13:52 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -336,6 +336,8 @@ void	ft_free_2d(char **str)
 	free(str);
 }
 
+
+
 void	ft_parse_map_2(t_cube *cube, char *map)
 {
 	char	**TD_map;
@@ -343,16 +345,10 @@ void	ft_parse_map_2(t_cube *cube, char *map)
 
 	i = 0;
 	TD_map = ft_split(map, '\n');
-	// while(TD_map[i])
-	// {
-	// 	printf("%s< \n", TD_map[i]);
-	// 	i++;
-	// }
-	printf(">> %d <<\n", cube->C);
 	cube->MapWidth = ft_get_width(TD_map);
 	cube->MapHeight = ft_get_hight(TD_map);
 	cube->Map = ft_calloc((cube->MapHeight + 1), sizeof(char *));
-	while(i < cube->MapHeight)
+	while(i <= cube->MapHeight)
 	{
 		cube->Map[i] = ft_strdup(TD_map[i]);
 		i++;
@@ -389,6 +385,54 @@ void	ft_parse_map(t_cube *cube, char **argv, char *arg, int i)
 	free(map);
 }
 
+char	is_a_direaction(char c)
+{
+	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
+}
+
+int	line_is_valid(char *str)
+{
+	int i;
+	char c;
+
+	i = 0;
+	c = 0;
+	if(str[i] == ' ')
+	{
+		while(str[i] == ' ')
+			i++;
+	}
+	while (str[i] && str[i + 1])
+	{
+		printf("[%c]", str[i]);
+		if((str[i] == '1' || str[i] == '0') && (str[i + 1] && str[i + 1] == ' '))
+		{
+			c = str[i];
+			i++;
+			while(str[i] && str[i] == ' ')
+				i++;
+			if(c != str[i])
+				return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
+int	ft_check_map(t_cube *cube)
+{
+	int i;
+
+	i = 1;
+	while (cube->Map[i])
+	{
+		if(!line_is_valid(cube->Map[i]))
+			return(0);
+		i++;
+	}
+	return (1);
+}
+
 void	ft_get_map(t_cube *cube, char **argv)
 {
 	int fd;
@@ -407,13 +451,26 @@ void	ft_get_map(t_cube *cube, char **argv)
 		}
 		free(line);
 	}
+	if(!ft_check_map(cube))
+		ft_exit("Map Error !");
 }
 
+void	ft_cube_values_init(t_cube *cube)
+{
+	cube->C = 0;
+	cube->F = 0;
+	cube->Psp = 0;
+	cube->MapHeight = 0;
+	cube->MapWidth = 0;
+	cube->P_position_x = 0;
+	cube->P_posotion_y = 0;
+}
 
 t_cube	*ft_struct_init(char **argv)
 {
 	t_cube *cube;
 	cube = malloc(sizeof(t_cube));
+	ft_cube_values_init(cube);
 	cube->files_f = ft_files_f_init();
 	ft_get_xpms(cube, argv);
 	ft_get_CF(cube, argv);
@@ -458,11 +515,12 @@ void	ft_print_cube(t_cube *cube)
 	printf("F RGB >> %d\n", cube->F);
 }
 
+
+
 int main(int argc, char **argv)
 {
     t_cube *cube;
 
-	
 	if(argc !=  2)
 	{
 		printf("Check the args !\n");
