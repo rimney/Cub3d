@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/19 20:02:18 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/20 03:28:43 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ typedef	struct	s_cube
 	int		F; // 5
 	int		*files_f;
 	int		MapHeight;
+	int		MapWidth;
+	char	**Map;
 } t_cube;
 
 /********************** Parsing Functions **********************/

@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/20 03:14:53 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/20 03:34:27 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,6 +288,54 @@ int	ft_is_an_xpm(char *line)
 	return (0);
 }
 
+int	ft_get_width(char **str)
+{
+	int i;
+	int len;
+
+	i = 0;
+	len = 0;
+	while(str[i])
+	{
+		if((size_t)len < ft_strlen(str[i]))
+			len = ft_strlen(str[i]);
+		i++;
+	}
+	return (len);
+}
+
+int	ft_get_hight(char **str)
+{
+	int i;
+
+	i = 0;
+	while(str[i])
+		i++;
+	return (i - 1);
+}
+
+void	ft_print_2d(char **str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+		printf("%s\n", str[i++]);
+}
+
+void	ft_free_2d(char **str)
+{
+	int i;
+
+	i = 0;
+	while(str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+
 void	ft_parse_map_2(t_cube *cube, char *map)
 {
 	char	**TD_map;
@@ -295,12 +343,22 @@ void	ft_parse_map_2(t_cube *cube, char *map)
 
 	i = 0;
 	TD_map = ft_split(map, '\n');
-	while(TD_map[i])
+	// while(TD_map[i])
+	// {
+	// 	printf("%s< \n", TD_map[i]);
+	// 	i++;
+	// }
+	printf(">> %d <<\n", cube->C);
+	cube->MapWidth = ft_get_width(TD_map);
+	cube->MapHeight = ft_get_hight(TD_map);
+	cube->Map = ft_calloc((cube->MapHeight + 1), sizeof(char *));
+	while(i < cube->MapHeight)
 	{
-		printf("%s< \n", TD_map[i]);
+		cube->Map[i] = ft_strdup(TD_map[i]);
 		i++;
 	}
-	printf(">> %d <<\n", cube->C);
+	ft_free_2d(TD_map);
+	ft_print_2d(cube->Map);
 }
 
 void	ft_parse_map(t_cube *cube, char **argv, char *arg, int i)
@@ -327,9 +385,7 @@ void	ft_parse_map(t_cube *cube, char **argv, char *arg, int i)
 		}
 		free(line);
 	}
-	 ft_parse_map_2(cube, map);
-	printf("%s <\n", map);
-	printf(">> %d <<\n", cube->C);
+	ft_parse_map_2(cube, map);
 	free(map);
 }
 
@@ -372,6 +428,7 @@ void	ft_free_parsing(t_cube *cube)
 	free(cube->WE);
 	free(cube->files_f);
 	free(cube->EA);
+	ft_free_2d(cube->Map);
 	free(cube);
 	cube = NULL;
 }
