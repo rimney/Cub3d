@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/20 16:13:52 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/22 14:42:02 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -347,12 +347,15 @@ void	ft_parse_map_2(t_cube *cube, char *map)
 	TD_map = ft_split(map, '\n');
 	cube->MapWidth = ft_get_width(TD_map);
 	cube->MapHeight = ft_get_hight(TD_map);
-	cube->Map = ft_calloc((cube->MapHeight + 1), sizeof(char *));
+	cube->Map = malloc(sizeof(char *) * (cube->MapHeight + 2));
+	if(!cube->Map)
+		ft_exit("allocation error\n");
 	while(i <= cube->MapHeight)
 	{
 		cube->Map[i] = ft_strdup(TD_map[i]);
 		i++;
 	}
+	cube->Map[i] = NULL;
 	ft_free_2d(TD_map);
 	ft_print_2d(cube->Map);
 }
@@ -390,45 +393,64 @@ char	is_a_direaction(char c)
 	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }
 
-int	line_is_valid(char *str)
+int	is_valid(char c)
 {
-	int i;
-	char c;
-
-	i = 0;
-	c = 0;
-	if(str[i] == ' ')
-	{
-		while(str[i] == ' ')
-			i++;
-	}
-	while (str[i] && str[i + 1])
-	{
-		printf("[%c]", str[i]);
-		if((str[i] == '1' || str[i] == '0') && (str[i + 1] && str[i + 1] == ' '))
-		{
-			c = str[i];
-			i++;
-			while(str[i] && str[i] == ' ')
-				i++;
-			if(c != str[i])
-				return (0);
-		}
-		i++;
-	}
-	return (1);
+	printf("[[%c]]\n", c);
+	if (c == '1' || c == '0' || c == 'S' || c == 'W' || c == 'E' || c == 'N')
+		return (1);
+	else
+		return (0);	
 }
+
 
 int	ft_check_map(t_cube *cube)
 {
-	int i;
+	size_t i;
+	size_t j;
 
-	i = 1;
-	while (cube->Map[i])
+	j = 1;
+	i = 0;
+	while (cube->Map[j] && (int)j < cube->MapHeight - 1)
 	{
-		if(!line_is_valid(cube->Map[i]))
-			return(0);
-		i++;
+		i = 0;
+		while(cube->Map[j][i] && i < ft_strlen(cube->Map[j]))
+		{
+			if(cube->Map[j][i] && cube->Map[j][i] == '0')
+			{
+				if(cube->Map[j][i + 1] == ' ' || cube->Map[j + 1][i] == ' ')
+				{
+					ft_exit("EEEE");
+				}
+				else if(( i >= 0 && !is_valid(cube->Map[j][i - 1])) || (j >= 1 && !is_valid(cube->Map[j - 1][i])))
+				{
+					printf("[[%c]]\n", cube->Map[j][i]);
+					printf("[%c] << %zu\n", cube->Map[j][i], i);
+					printf(">> %s <<\n", cube->Map[j]);
+					ft_exit("EEEE");
+				}
+				else
+					i++;
+				// // if((size_t)i >= ft_strlen(cube->Map[j]))
+				// // {
+				// // 	printf("%zu < y\n", j);
+				// // 	printf("%zu < x\n", i);
+				// // 	return (0);
+				// // }
+				// if(is_valid(cube->Map[j][i + 1]
+				// 	&& is_valid(cube->Map[j][i - 1])))
+				// {
+				// 	printf("valid >> %s <<\n", cube->Map[j]);
+				// 	printf("[%c]\n", cube->Map[j][i - 1]);
+				// }			
+				// else
+				// {
+				// 	printf("invalid >> %s <<\n", cube->Map[j]);
+				// }
+					
+			}
+			i++;
+		}
+		j++;
 	}
 	return (1);
 }
@@ -464,6 +486,7 @@ void	ft_cube_values_init(t_cube *cube)
 	cube->MapWidth = 0;
 	cube->P_position_x = 0;
 	cube->P_posotion_y = 0;
+	cube->Map = NULL;
 }
 
 t_cube	*ft_struct_init(char **argv)
@@ -485,7 +508,8 @@ void	ft_free_parsing(t_cube *cube)
 	free(cube->WE);
 	free(cube->files_f);
 	free(cube->EA);
-	ft_free_2d(cube->Map);
+	if(cube->MapWidth)
+		ft_free_2d(cube->Map);
 	free(cube);
 	cube = NULL;
 }
@@ -529,6 +553,6 @@ int main(int argc, char **argv)
 	cube = ft_struct_init(argv);
 	ft_print_cube(cube);
 	ft_free_parsing(cube);
-    system("leaks Cub3d");
+    // system("leaks Cub3d");
 	
 }

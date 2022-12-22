@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 17:19:58 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/18 19:25:33 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/21 02:58:12 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ char	*ft_strdup(const char *s1)
 
 	i = 0;
 	str = malloc(sizeof(char) * (ft_strlen(s1) + 1));
-	if (!str)
-		return (NULL);
 	while ((size_t)i < ft_strlen(s1))
 	{
 		str[i] = s1[i];
