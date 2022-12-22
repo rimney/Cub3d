@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/22 16:11:30 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/22 16:17:36 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -564,14 +564,16 @@ void ft_print(char *str, char *s)
 
 void	ft_print_cube(t_cube *cube)
 {
-
 	ft_print("NO texture file >> ", cube->NO);
 	ft_print("SO texture file >> ", cube->SO);
 	ft_print("EA texture file >> ", cube->EA);
 	ft_print("WE texture file >>", cube->WE);
 	printf("C RGB >> %d\n", cube->C);
 	printf("F RGB >> %d\n", cube->F);
+	printf("Player Px >> %d \n", cube->P_position_x);
+	printf("Player Py >> %d \n", cube->P_posotion_y);
 }
+
 
 
 
