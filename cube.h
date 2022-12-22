@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/20 15:35:40 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/22 20:52:42 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include "Libft/libft.h"
+#include "libft/libft.h"
 #include "Get_next_line/get_next_line.h"
 
 typedef	struct	s_cube

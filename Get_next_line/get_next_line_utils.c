@@ -6,12 +6,12 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 17:19:58 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/21 02:58:12 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/22 20:52:33 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "../Libft/libft.h"
+#include "../libft/libft.h"
 char	*ft_strdup(const char *s1)
 {
 	int		i;

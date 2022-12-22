@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/22 16:17:36 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/22 20:55:18 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -406,9 +406,9 @@ int	c_is_safe(t_cube *cube, size_t i, size_t j)
 	{
 		if(i >= ft_strlen(cube->Map[j - 1]) || (i >= ft_strlen(cube->Map[j + 1])))
 			return (0);
-		else if((!is_valid(cube->Map[j][i + 1])) || (j >= 1 && !is_valid(cube->Map[j + 1][i])))
+		else if((!is_valid(cube->Map[j][i + 1])) || (!is_valid(cube->Map[j + 1][i])))
 			return (0);
-		else if(( i >= 0 && !is_valid(cube->Map[j][i - 1])) || (j >= 1 && !is_valid(cube->Map[j - 1][i])))
+		else if((!is_valid(cube->Map[j][i - 1])) || (!is_valid(cube->Map[j - 1][i])))
 			return (0);
 	}
 	return (1);
