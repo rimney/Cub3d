@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/22 14:42:02 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/22 16:11:30 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -388,20 +388,52 @@ void	ft_parse_map(t_cube *cube, char **argv, char *arg, int i)
 	free(map);
 }
 
-char	is_a_direaction(char c)
+char	is_a_direction(char c)
 {
 	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }
 
 int	is_valid(char c)
 {
-	printf("[[%c]]\n", c);
 	if (c == '1' || c == '0' || c == 'S' || c == 'W' || c == 'E' || c == 'N')
 		return (1);
 	else
 		return (0);	
 }
+int	c_is_safe(t_cube *cube, size_t i, size_t j)
+{
+	if(cube->Map[j][i] && cube->Map[j][i] == '0')
+	{
+		if(i >= ft_strlen(cube->Map[j - 1]) || (i >= ft_strlen(cube->Map[j + 1])))
+			return (0);
+		else if((!is_valid(cube->Map[j][i + 1])) || (j >= 1 && !is_valid(cube->Map[j + 1][i])))
+			return (0);
+		else if(( i >= 0 && !is_valid(cube->Map[j][i - 1])) || (j >= 1 && !is_valid(cube->Map[j - 1][i])))
+			return (0);
+	}
+	return (1);
+}
 
+int	ft_check_header_and_footer(t_cube *cube)
+{
+	int i;
+
+	i = 0;
+	while(cube->Map[0][i])
+	{
+		if((cube->Map[0][i] != ' ' && cube->Map[0][i] != '1' && cube->Map[0][i] != '\t'))
+			return (0);
+		i++;
+	}
+	i = 0;
+	while(cube->Map[cube->MapHeight][i])
+	{
+		if(cube->Map[cube->MapHeight][i] != '1' && cube->Map[cube->MapHeight][i] != ' ' && cube->Map[cube->MapHeight][i] != '\t')
+			return (0);
+			i++;
+	}
+	return (1);
+}
 
 int	ft_check_map(t_cube *cube)
 {
@@ -410,49 +442,50 @@ int	ft_check_map(t_cube *cube)
 
 	j = 1;
 	i = 0;
-	while (cube->Map[j] && (int)j < cube->MapHeight - 1)
+	if(!ft_check_header_and_footer(cube))
+		return (0);
+	while (cube->Map[j] && (int)j < cube->MapHeight)
 	{
 		i = 0;
-		while(cube->Map[j][i] && i < ft_strlen(cube->Map[j]))
+		while (cube->Map[j][i] && i < ft_strlen(cube->Map[j]))
 		{
-			if(cube->Map[j][i] && cube->Map[j][i] == '0')
+			if (cube->Map[j][i] && cube->Map[j][i] == '0')
 			{
-				if(cube->Map[j][i + 1] == ' ' || cube->Map[j + 1][i] == ' ')
-				{
-					ft_exit("EEEE");
-				}
-				else if(( i >= 0 && !is_valid(cube->Map[j][i - 1])) || (j >= 1 && !is_valid(cube->Map[j - 1][i])))
-				{
-					printf("[[%c]]\n", cube->Map[j][i]);
-					printf("[%c] << %zu\n", cube->Map[j][i], i);
-					printf(">> %s <<\n", cube->Map[j]);
-					ft_exit("EEEE");
-				}
-				else
-					i++;
-				// // if((size_t)i >= ft_strlen(cube->Map[j]))
-				// // {
-				// // 	printf("%zu < y\n", j);
-				// // 	printf("%zu < x\n", i);
-				// // 	return (0);
-				// // }
-				// if(is_valid(cube->Map[j][i + 1]
-				// 	&& is_valid(cube->Map[j][i - 1])))
-				// {
-				// 	printf("valid >> %s <<\n", cube->Map[j]);
-				// 	printf("[%c]\n", cube->Map[j][i - 1]);
-				// }			
-				// else
-				// {
-				// 	printf("invalid >> %s <<\n", cube->Map[j]);
-				// }
-					
+				if(!c_is_safe(cube, i, j))
+					return (0);
 			}
 			i++;
 		}
 		j++;
 	}
 	return (1);
+}
+
+void	ft_get_player_position(t_cube *cube)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (cube->Map[j] && (int)j < cube->MapHeight)
+	{
+		i = 0;
+		while((size_t)i < ft_strlen(cube->Map[j]))
+		{
+			if(is_a_direction(cube->Map[j][i]) && !cube->P_position_x && !cube->P_posotion_y)
+			{
+				cube->P_position_x = i;
+				cube->P_posotion_y = j;
+				i++;
+			}
+			if(is_a_direction(cube->Map[j][i]) && cube->P_position_x && cube->P_posotion_y)
+				ft_exit("Duplicate Direction");
+			else
+				i++;
+		}
+		j++;
+	}
 }
 
 void	ft_get_map(t_cube *cube, char **argv)
@@ -475,6 +508,7 @@ void	ft_get_map(t_cube *cube, char **argv)
 	}
 	if(!ft_check_map(cube))
 		ft_exit("Map Error !");
+	ft_get_player_position(cube);
 }
 
 void	ft_cube_values_init(t_cube *cube)
