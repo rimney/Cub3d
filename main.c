@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/22 22:24:24 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/23 00:10:48 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,22 @@
 // {
 	
 // }
+
+t_cube	*ft_struct_init(char **argv)
+{
+	t_cube *cube;
+	cube = malloc(sizeof(t_cube));
+	ft_cube_values_init(cube);
+	cube->files_f = ft_files_f_init();
+	ft_get_xpms(cube, argv);
+	ft_get_CF(cube, argv);
+	ft_get_map(cube, argv);
+	cube->mlx_init = mlx_init();
+	cube->mlx_window = mlx_new_window(cube->mlx_init, cube->MapWidth * 35, cube->MapHeight * 35, "cube");
+	mlx_loop(cube->mlx_init);
+	
+	return (cube);
+}
 
 int main(int argc, char **argv)
 {

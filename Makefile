@@ -6,7 +6,7 @@
 #    By: rimney <rimney@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/17 01:48:17 by rimney            #+#    #+#              #
-#    Updated: 2022/12/22 21:46:24 by rimney           ###   ########.fr        #
+#    Updated: 2022/12/23 00:08:39 by rimney           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME = Cub3d
 LIBFTA = libft/libft.a
 GNL_SRCS = Get_next_line/get_next_line.c \
 			Get_next_line/get_next_line_utils.c \
-
+		
+MLX = -lmlx -framework OpenGL -framework AppKit
 CC = cc
 FLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 SRCS = main.c \
@@ -34,7 +35,7 @@ $(LIBFTA) :
 all : $(NAME)
 
 $(NAME) : $(SRCS)
-	$(CC) $(FLAGS) $(SRCS) $(GNL_SRCS) $(LIBFTA) -o $(NAME)
+	$(CC) $(FLAGS) $(MLX) $(SRCS) $(GNL_SRCS) $(LIBFTA) -o $(NAME)
 	
 clean :
 	(cd libft && make clean)

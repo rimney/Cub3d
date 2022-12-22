@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:44:53 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/22 21:45:17 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/23 00:07:42 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,7 @@ void	ft_cube_values_init(t_cube *cube)
 	cube->Map = NULL;
 }
 
-t_cube	*ft_struct_init(char **argv)
-{
-	t_cube *cube;
-	cube = malloc(sizeof(t_cube));
-	ft_cube_values_init(cube);
-	cube->files_f = ft_files_f_init();
-	ft_get_xpms(cube, argv);
-	ft_get_CF(cube, argv);
-	ft_get_map(cube, argv);
-	return (cube);
-}
+
 
 void	ft_free_parsing(t_cube *cube)
 {
