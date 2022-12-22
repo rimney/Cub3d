@@ -31,5 +31,6 @@ EA texture file >> EA textures/rocks.xpm
 WE texture file >>WE textures/wood_box.xpm
 C RGB >> 6378879
 F RGB >> 5921370
-Player Px >> 35 
-Player Py >> 17 
+Player Px >> 35.000000 
+Player Py >> 17.000000 
+Player Psp >> W

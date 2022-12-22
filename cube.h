@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/22 20:52:42 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/22 21:01:33 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 
 typedef	struct	s_cube
 {
-    int		P_position_x;
-    int		P_posotion_y;
+    double		P_position_x;
+    double		P_posotion_y;
     char	*NO; // 0
 	char	*WE; // 2
 	char	*EA; // 3

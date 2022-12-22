@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/22 20:55:18 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/22 21:05:20 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -475,6 +475,7 @@ void	ft_get_player_position(t_cube *cube)
 		{
 			if(is_a_direction(cube->Map[j][i]) && !cube->P_position_x && !cube->P_posotion_y)
 			{
+				cube->Psp = cube->Map[j][i];
 				cube->P_position_x = i;
 				cube->P_posotion_y = j;
 				i++;
@@ -570,8 +571,9 @@ void	ft_print_cube(t_cube *cube)
 	ft_print("WE texture file >>", cube->WE);
 	printf("C RGB >> %d\n", cube->C);
 	printf("F RGB >> %d\n", cube->F);
-	printf("Player Px >> %d \n", cube->P_position_x);
-	printf("Player Py >> %d \n", cube->P_posotion_y);
+	printf("Player Px >> %f \n", cube->P_position_x);
+	printf("Player Py >> %f \n", cube->P_posotion_y);
+	printf("Player Psp >> %c\n", cube->Psp);
 }
 
 
