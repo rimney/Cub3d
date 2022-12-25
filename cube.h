@@ -6,12 +6,13 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/22 21:46:54 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/25 02:34:20 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE_H
 # define CUBE_H
+# define SCALE 35
 
 #include <unistd.h>
 #include <mlx.h>
@@ -20,6 +21,15 @@
 #include <fcntl.h>
 #include "libft/libft.h"
 #include "Get_next_line/get_next_line.h"
+
+typedef struct s_img
+{
+	void	*img;
+	int		endian;
+	int		bpp;
+	int		size_len;
+	char	*addr;
+} t_img;
 
 typedef	struct	s_cube
 {
@@ -38,6 +48,7 @@ typedef	struct	s_cube
 	char	**Map;
 	void	*mlx_init;
 	void	*mlx_window;
+	t_img	*img;
 } t_cube;
 
 /********************** Parsing Functions **********************/
@@ -72,7 +83,7 @@ int	ft_check_map(t_cube *cube);
 void	ft_get_player_position(t_cube *cube);
 void	ft_get_map(t_cube *cube, char **argv);
 void	ft_cube_values_init(t_cube *cube);
-t_cube	*ft_struct_init(char **argv);
+t_cube	*ft_struct_init(char **argv, t_img *img);
 void	ft_free_parsing(t_cube *cube);
 void ft_print(char *str, char *s);
 void	ft_print_cube(t_cube *cube);

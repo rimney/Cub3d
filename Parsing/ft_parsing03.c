@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:42:29 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/22 21:43:35 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/24 21:32:53 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	ft_strcmp(char *s1, char *s2)
 		i++;
 	return (s1[i] - s2[i]);
 }
+
 
 int	ft_is_an_xpm(char *line)
 {
