@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/25 21:14:54 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/25 23:07:50 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ void	my_pixel_put(t_cube *cube, int x, int y, int color)
 
     pixel = cube->img->addr + (y * cube->img->size_len + x * (cube->img->bpp / 8));
 	*(int *)pixel = color;
-	printf("%d <\n", x);
-	printf("%d <\n", y);
 }
 
 int render_block(t_cube *cube, int x, int y, int w, int h)
@@ -69,12 +67,56 @@ int render_block(t_cube *cube, int x, int y, int w, int h)
 		j = x;
 		while (j < w + x)
 		{
-			my_pixel_put(cube, j, i, 0xFF0000);
+			my_pixel_put(cube, j, i, 0xFFFFFF);
 			j++;
 		}
 		i++;
 	}
 	return (0);
+}
+
+void	ft_render_lines_vertical(t_cube *cube)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = SCALE;
+	while(j < cube->MapWidth * SCALE)
+	{
+		i = 0;
+		while(i < cube->MapHeight * SCALE)
+		{
+			my_pixel_put(cube, j, i, 0xFF0000);
+			i++;
+		}
+		j += SCALE;
+	}
+}
+
+void	ft_render_lines_horizental(t_cube *cube)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = SCALE;
+	while(j < cube->MapHeight * SCALE)
+	{
+		i = 0;
+		while(i < cube->MapWidth * SCALE)
+		{
+			my_pixel_put(cube, i, j, 0xFF0000);
+			i++;
+		}
+		j += SCALE;
+	}
+}
+
+void	ft_render_lines(t_cube *cube)
+{
+	ft_render_lines_vertical(cube);
+	ft_render_lines_horizental(cube);
 }
 
 int	render(t_cube *cube, t_img *img)
@@ -85,11 +127,12 @@ int	render(t_cube *cube, t_img *img)
 	i = 0;
 	j = 0;
 	img->addr = mlx_get_data_addr(cube->img->img, &img->bpp, &img->size_len, &img->endian);
-	// while(j < cube->MapWidth)
-	// {
-		render_block(cube, (cube->MapWidth * SCALE), (cube->MapHeight * SCALE), SCALE, SCALE);
-		render_block(cube, 0, 0, SCALE, SCALE);
-	// }
+	ft_render_lines(cube);
+	while(j < cube->MapWidth * SCALE)
+	{
+		render_block(cube, j, 0, SCALE, SCALE);
+		j += SCALE;
+	}
 	return (0);
 }
 
@@ -100,8 +143,8 @@ void	ft_create_window(t_cube *cube, t_img *img)
 	int j = 0;
 
 	cube->mlx_init = mlx_init();
-	cube->mlx_window = mlx_new_window(cube->mlx_init, cube->MapWidth * SCALE, cube->MapHeight * SCALE, "cube");
-	img->img = mlx_new_image(cube->mlx_init, cube->MapWidth * 50, cube->MapHeight * 50);
+	cube->mlx_window = mlx_new_window(cube->mlx_init, cube->MapWidth * SCALE + 5, cube->MapHeight * SCALE + 5, "cube");
+	img->img = mlx_new_image(cube->mlx_init, cube->MapWidth * SCALE, cube->MapHeight * SCALE);
 	render(cube, img);
 	mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, img->img ,i, j);
 	mlx_loop(cube->mlx_init);

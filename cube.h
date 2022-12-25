@@ -6,13 +6,13 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/25 21:14:32 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/25 22:20:59 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE_H
 # define CUBE_H
-# define SCALE 35
+# define SCALE 32
 
 #include <unistd.h>
 #include <mlx.h>
