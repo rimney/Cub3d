@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing05.c                                        :+:      :+:    :+:   */
+/*   ft_parsing05.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:44:18 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/22 21:44:33 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/25 23:51:21 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ int	ft_check_header_and_footer(t_cube *cube)
 		i++;
 	}
 	i = 0;
-	while(cube->Map[cube->MapHeight][i])
+	while(cube->Map[cube->MapHeight - 1][i])
 	{
-		if(cube->Map[cube->MapHeight][i] != '1' && cube->Map[cube->MapHeight][i] != ' ' && cube->Map[cube->MapHeight][i] != '\t')
+		if(cube->Map[cube->MapHeight - 1][i] != '1' && cube->Map[cube->MapHeight - 1][i] != ' ' && cube->Map[cube->MapHeight - 1][i] != '\t')
 			return (0);
 			i++;
 	}

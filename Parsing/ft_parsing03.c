@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:42:29 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/24 21:32:53 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/25 23:50:04 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	ft_get_hight(char **str)
 	i = 0;
 	while(str[i])
 		i++;
-	return (i - 1);
+	return (i);
 }
 
 void	ft_print_2d(char **str)

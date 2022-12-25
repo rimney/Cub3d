@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:43:41 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/22 21:43:48 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/25 23:50:41 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ft_parse_map_2(t_cube *cube, char *map)
 	cube->Map = malloc(sizeof(char *) * (cube->MapHeight + 2));
 	if(!cube->Map)
 		ft_exit("allocation error\n");
-	while(i <= cube->MapHeight)
+	while(i < cube->MapHeight)
 	{
 		cube->Map[i] = ft_strdup(TD_map[i]);
 		i++;
