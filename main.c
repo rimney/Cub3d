@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/25 03:01:37 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/25 21:14:54 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,17 @@ int render_block(t_cube *cube, int x, int y, int w, int h)
 
 int	render(t_cube *cube, t_img *img)
 {
-	img->addr = mlx_get_data_addr(cube->img->img, &img->bpp, &img->size_len, &img->endian);
-	printf("%d << endian\n", img->endian);
-	printf("%d << line_len\n", img->size_len);
-	printf("%d << bpp\n", img->bpp);
+	int i;
+	int j;
 
-	render_block(cube, (cube->MapWidth * SCALE - 100), (cube->MapHeight * SCALE - 100), 100, 100);
-	render_block(cube, 0, 0, 100, 100);
+	i = 0;
+	j = 0;
+	img->addr = mlx_get_data_addr(cube->img->img, &img->bpp, &img->size_len, &img->endian);
+	// while(j < cube->MapWidth)
+	// {
+		render_block(cube, (cube->MapWidth * SCALE), (cube->MapHeight * SCALE), SCALE, SCALE);
+		render_block(cube, 0, 0, SCALE, SCALE);
+	// }
 	return (0);
 }
 
