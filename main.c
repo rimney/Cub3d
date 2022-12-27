@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/26 00:24:32 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/27 21:13:47 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,41 @@ void	ft_render_player(t_cube *cube)
 	my_pixel_put(cube, cube->P_position_x * SCALE - 1, cube->P_posotion_y * SCALE, 0xFFFF00);
 	my_pixel_put(cube, cube->P_position_x * SCALE - 2, cube->P_posotion_y * SCALE, 0xFFFF00);
 	my_pixel_put(cube, cube->P_position_x * SCALE, cube->P_posotion_y - 1 * SCALE, 0xFFFF00);
-	// my_pixel_put(cube, cube->P_position_x * SCALE, cube->P_posotion_y - 2 * SCALE, 0xFFFF00);
+	my_pixel_put(cube, cube->P_position_x * SCALE, cube->P_posotion_y - 2 * SCALE, 0xFFFF00);
+}
+
+// void	ft_move_player_forward(t_cube *cube, int x, int y)
+// {
+// 	y = 0;
+// 	my_pixel_put(cube, cube->P_position_x * SCALE, cube->P_posotion_y * SCALE + y, 0xFFFF00);
+
+// }
+
+int	key_hook(int key, t_cube *cube)
+{
+	printf("%d <<\n", key);
+	if(key == 0)
+		printf("A\n");
+	if(key == 1)
+		printf("S\n");
+	if(key == 2)
+		printf("D\n");
+	if (key == 256)
+	{
+		// ft_move_player_forward(cube, cube->P_position_x * SCALE, cube->P_posotion_y * SCALE);
+		printf("W\n");
+	}
+	if (key == 123)
+		printf("LEFT\n");
+	if (key == 124)
+		printf("right\n");
+	if (key == 125)
+		printf("DOWN\n");
+	if (key == 126)
+		printf("UP\n");
+	if(cube)
+		return (0);
+	return (0);
 }
 
 int	render(t_cube *cube, t_img *img)
@@ -175,6 +209,7 @@ void	ft_create_window(t_cube *cube, t_img *img)
 	cube->mlx_window = mlx_new_window(cube->mlx_init, cube->MapWidth * SCALE, cube->MapHeight * SCALE, "cube");
 	img->img = mlx_new_image(cube->mlx_init, cube->MapWidth * SCALE, cube->MapHeight * SCALE);
 	render(cube, img);
+	mlx_key_hook(cube->mlx_window, key_hook, cube);
 	mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, img->img ,i, j);
 	mlx_loop(cube->mlx_init);
 }
