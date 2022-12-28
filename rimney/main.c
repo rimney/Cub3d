@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/28 03:31:46 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/29 00:55:59 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,6 @@ void	render_background(t_cube *cube)
 	}
 }
 
-// void	my_pixel_put(t_cube *cube, int x, int y, int color)
-// {
-// 	char *pixel;
-// 	int i;
-
-// 	i = 0;
-// 	pixel = cube->img->addr + (y * cube->img->size_len + x * (cube->img->bpp / 8));
-// 	while (i >= 0)
-// 	{
-// 		if(cube->img->endian)
-// 			*pixel++ = (color >> i) & 0xFF;
-// 		else
-// 			*pixel++ = (color >> (cube->img->bpp - 8 - i)) & 0xFF;
-// 		i -= 8;
-// 	}
-// }
 
 void	my_pixel_put(t_img *img, int x, int y, int color)
 {
@@ -57,10 +41,8 @@ void	my_pixel_put(t_img *img, int x, int y, int color)
     pixel = img->addr + (y * img->size_len + x * (img->bpp / 8));
 	while (i >= 0)
 	{
-		/* big endian, MSB is the leftmost bit */
 		if (img->endian != 0)
 			*pixel++ = (color >> i) & 0xFF;
-		/* little endian, LSB is the leftmost bit */
 		else
 			*pixel++ = (color >> (img->bpp - 8 - i)) & 0xFF;
 		i -= 8;
@@ -132,48 +114,57 @@ void	ft_render_lines(t_cube *cube)
 
 void	ft_render_player(t_cube *cube)
 {
-	// int i = 0;
-	// int j = 0;
-
-	// i = cube->P_position_x;
-	// j = cube->P_posotion_y;
-	// mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, img->img ,i, j);
-		printf("%f << Y\n", cube->P_posotion_y);
-	render_block(cube, cube->P_position_x * SCALE, cube->P_posotion_y * SCALE, SCALE, SCALE, 0xFF0000);
-
-
+	printf("walk direction >> %f\n", cube->player->walkdirection);
+	printf("turn direction >> %f\n", cube->player->turndirection);
+	
+	render_block(cube, cube->P_position_x * SCALE, cube->P_posotion_y * SCALE, SCALE / 4, SCALE / 4 , 0xFF0000);
 }
 
 void	ft_move_player_forward(t_cube *cube)
 {
+
 	cube->P_posotion_y -= 1;
-	printf("%f <<\n", cube->P_posotion_y);
 }
 
-int	key_hook(int key, t_cube *cube)
+void	ft_move_player_backward(t_cube *cube)
 {
-	printf("%d <<\n", key);
-	if(key == 0)
-		printf("A\n");
-	if(key == 1)
-		printf("S\n");
-	if(key == 2)
-		printf("D\n");
-	if (key == 13)
-	{
-		ft_move_player_forward(cube);
-		printf("W\n");
-	}
-	if (key == 123)
-		printf("LEFT\n");
-	if (key == 124)
-		printf("right\n");
-	if (key == 125)
-		printf("DOWN\n");
-	if (key == 126)
-		printf("UP\n");
-	if(cube)
-		return (0);
+	cube->P_posotion_y += 1;
+}
+
+void	ft_move_player_right(t_cube *cube)
+{
+	cube->P_position_x += 1;
+}
+
+void	ft_move_player_left(t_cube *cube)
+{
+	cube->P_position_x -= 1;
+}
+
+int	key_press(int key, t_cube *cube)
+{
+	if(key == UP_KEY || key == W_KEY)
+		cube->player->walkdirection = 1;
+	else if (key == DOWN_KEY || key == S_KEY)
+		cube->player->walkdirection = -1;
+	else if (key == RIGHT_KEY)
+		cube->player->turndirection = 1;
+	else if (key == LEFT_KEY)
+		cube->player->turndirection = -1;
+	printf("EEEE\n");
+	return (0);
+}
+
+int	key_release(int key, t_cube *cube)
+{
+	if(key == UP_KEY || key == W_KEY)
+		cube->player->walkdirection = 0;
+	else if (key == DOWN_KEY || key == S_KEY)
+		cube->player->walkdirection = 0;
+	else if (key == RIGHT_KEY)
+		cube->player->turndirection = 0;
+	else if (key == LEFT_KEY)
+		cube->player->turndirection = 0;
 	return (0);
 }
 
@@ -181,9 +172,13 @@ int	render(t_cube *cube)
 {
 	int i;
 	int j;
+	int ii;
+	int jj;
 
 	i = 0;
 	j = 0;
+	ii = 0;
+	jj = 0;
 	while(i < cube->MapHeight)
 	{
 		j = 0;
@@ -201,31 +196,41 @@ int	render(t_cube *cube)
 	}
 	ft_render_lines(cube);
 	ft_render_player(cube);
+	mlx_key_hook(cube->mlx_window, key_press, cube);
+	mlx_key_hook(cube->mlx_window, key_release, cube);
+	// if(cube->render)
+	// 	mlx_clear_window(cube->mlx_init, cube->mlx_window);
+	mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, cube->img->img ,ii, jj);
 
-	if(cube->render)
-		mlx_clear_window(cube->mlx_init, cube->mlx_window);
-	cube->render = 1;
-	mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, cube->img->img ,i, j);
 	return (0);
 }
 
-
 void	ft_create_window(t_cube *cube, t_img *img)
 {
-	int i = 0;
-	int j = 0;
+
 
 	cube->mlx_init = mlx_init();
 	cube->mlx_window = mlx_new_window(cube->mlx_init, cube->MapWidth * SCALE, cube->MapHeight * SCALE, "cube");
 	img->img = mlx_new_image(cube->mlx_init, cube->MapWidth * SCALE, cube->MapHeight * SCALE);
 	img->addr = mlx_get_data_addr(cube->img->img, &img->bpp, &img->size_len, &img->endian);
-	render(cube);
 	// ft_render_player(cube);
 	cube->img = img;
-	mlx_key_hook(cube->mlx_window, key_hook, cube);
+
 	mlx_loop_hook(cube->mlx_init, render, cube);
-	mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, img->img ,i, j);
 	mlx_loop(cube->mlx_init);
+}
+
+void	ft_init_player(t_cube *cube, t_player *player)
+{
+	player->x = cube->P_position_x;
+	player->y = cube->P_posotion_y;
+	player->radius = 3;
+	player->turndirection = 0;
+	player->walkdirection = 0;
+	player->rotationangle = PI / 2;
+	player->movespeed = 2.0;
+	player->rotationspeed = 2 * (PI / 100);
+	cube->player = player;
 }
 
 void	ft_img_init(t_img *img)
@@ -236,7 +241,7 @@ void	ft_img_init(t_img *img)
 	img->addr = NULL;
 }
 
-t_cube	*ft_struct_init(char **argv, t_img *img)
+t_cube	*ft_struct_init(char **argv, t_img *img, t_player *player)
 {
 	t_cube *cube;
 	cube = malloc(sizeof(t_cube));
@@ -245,6 +250,7 @@ t_cube	*ft_struct_init(char **argv, t_img *img)
 	ft_get_xpms(cube, argv);
 	ft_get_CF(cube, argv);
 	ft_get_map(cube, argv);
+	ft_init_player(cube, player);
 	ft_img_init(img);
 	cube->img = img;
 	ft_create_window(cube, img);
@@ -256,12 +262,13 @@ int main(int argc, char **argv)
 {
     t_cube	*cube;
 	t_img	img;
+	t_player player;
 	if(argc !=  2)
 	{
 		printf("Check the args !\n");
 		exit(0);
 	}
-	cube = ft_struct_init(argv, &img);
+	cube = ft_struct_init(argv, &img, &player);
 	ft_print_cube(cube);
 	ft_free_parsing(cube);
     // system("leaks Cub3d");
