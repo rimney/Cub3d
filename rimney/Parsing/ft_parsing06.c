@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing06.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:44:53 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/23 00:07:42 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/27 23:00:21 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	ft_cube_values_init(t_cube *cube)
 	cube->P_position_x = 0;
 	cube->P_posotion_y = 0;
 	cube->Map = NULL;
+	cube->render = 0;
 }
 
 
