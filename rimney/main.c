@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/29 04:36:43 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/29 13:29:50 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,46 +142,36 @@ void	DDA(t_cube *cube, int x1, int y1)
 	}
 }
 
-void ft_drawline(t_cube *cube, int x1, int y1)
+int	is_a_wall(t_cube *cube, double X, double Y)
 {
-    int dx, dy, p, x, y;
- 
-dx=x1-cube->player->x;
-dy=y1-cube->player->y;
- 
-x=cube->player->x;
-y=cube->player->y;
- 
-p=2*dy-dx;
- 
-while(x<x1)
-{
-if(p>=0)
-{
-	my_pixel_put(cube->img, x,y, 0xFF0000);
-y=y+1;
-p=p+2*dy-2*dx;
-}
-else
-{
-	my_pixel_put(cube->img, x,y, 0xFF0000);
-p=p+2*dy;
-}
-x=x+1;
-}
+	int	i;
+	int j;
+	 // theres another case that i gotta check !!
+	i = floor(X);
+	j = floor(Y);
+	printf("[%c]\n", cube->Map[j][i]);
+	if(cube->Map[j][i] == '1')
+		return (0);
+	return (1);
 }
 
 void	ft_render_player(t_cube *cube)
 {
-	// int player_X;
-	// int player_Y;
+	double player_X;
+	double player_Y;
 	double movestep;
 	// player_X = 
 	movestep = cube->player->walkdirection * cube->player->movespeed;
 	
 	cube->player->rotationangle += (cube->player->turndirection * cube->player->rotationspeed);
-	cube->player->x += cos(cube->player->rotationangle) * movestep;
-	cube->player->y += sin(cube->player->rotationangle) * movestep;
+	player_X = cube->player->x + cos(cube->player->rotationangle) * movestep;
+	player_Y = cube->player->y + sin(cube->player->rotationangle) * movestep;
+	if(is_a_wall(cube, player_X / SCALE, player_Y / SCALE))
+	{
+		cube->player->x = player_X;
+		cube->player->y = player_Y;
+	}
+	// cube->player->y += sin(cube->player->rotationangle) * movestep;
 	DDA(cube, cos(cube->player->rotationangle) * 90 * SCALE, sin(cube->player->rotationangle) * 90 * SCALE);
 	render_block(cube, cube->player->x, cube->player->y, SCALE / 4, SCALE / 4 , 0xFF0000);
 }
@@ -268,7 +258,7 @@ void	ft_init_player(t_cube *cube, t_player *player)
 	player->radius = 3;
 	player->turndirection = 0;
 	player->walkdirection = 0;
-	player->rotationangle = PI / 2;
+	player->rotationangle = PI / 3;
 	player->movespeed = 2.0;
 	player->rotationspeed = 2 * (PI / 180);
 	cube->player = player;

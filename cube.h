@@ -6,14 +6,21 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/25 22:20:59 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/28 22:28:29 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE_H
 # define CUBE_H
 # define SCALE 32
-
+# define UP_KEY 13
+# define LEFT_KEY 123
+# define RIGHT_KEY 124
+# define DOWN_KEY 125
+# define W_KEY 13
+# define S_KEY 1
+# define A_KEY 0
+# define D_KEY 2
 #include <unistd.h>
 #include <mlx.h>
 #include <stdlib.h>
