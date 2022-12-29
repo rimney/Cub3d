@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/29 15:08:03 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/29 15:48:29 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@
 
 typedef struct s_ray
 {
-	int	fovangle;
+	double	fovangle;
 	int	rays_num;
 	int wall_strip_width;
+	double	*rays;
 	
 } t_ray;
 

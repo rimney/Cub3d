@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/29 15:10:17 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/29 15:56:38 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,11 +145,39 @@ void	DDA(t_cube *cube, int x1, int y1)
 void	ft_cast_rays(t_cube *cube)
 {
 	int	columnid;
-	int	rayangle;
+	double	rayangle;
+	int i;
 
+	i = 0;
 	columnid = 0;
-	
-	
+	rayangle = cube->player->rotationangle - (cube->ray->fovangle / 2);
+	while(i < cube->ray->rays_num)
+	{
+		cube->ray->rays[i] = rayangle;
+		rayangle += cube->ray->fovangle / cube->ray->rays_num;
+		printf("%f << rayangle\n", rayangle);
+		// printf("%f << fov\n", cube->ray->fovangle);
+		// printf("%d << rays num\n", cube->ray->rays_num);
+		i++;
+		columnid += 1;
+	}
+	// exit(0);
+}
+
+void	ft_render_rays(t_cube *cube)
+{
+	int i;
+	i = 0;
+
+	// ft_cast_rays(cube);
+	while(i < cube->ray->rays_num)
+	{
+		// printf("%f << ray\n", cube->ray->rays[i]);
+	DDA(cube, cube->player->x + cos(cube->ray->rays[i]) * (SCALE + 32), cube->player->y + sin(cube->ray->rays[i])  * (SCALE + 32));
+
+		i++;
+	}
+	// exit(0);
 }
 
 int	is_a_wall(t_cube *cube, double X, double Y)
@@ -181,9 +209,11 @@ void	ft_render_player(t_cube *cube)
 		cube->player->x = player_X;
 		cube->player->y = player_Y;
 	}
+	ft_cast_rays(cube);
 	// cube->player->y += sin(cube->player->rotationangle) * movestep;
 	DDA(cube, cube->player->x + cos(cube->player->rotationangle) * SCALE, cube->player->y + sin(cube->player->rotationangle)  * SCALE);
-	render_block(cube, cube->player->x, cube->player->y, SCALE / 4, SCALE / 4 , 0xFF0000);
+	render_block(cube, cube->player->x, cube->player->y, SCALE / 10, SCALE / 10 , 0xFF0000);
+	 ft_render_rays(cube);
 }
 
 int	key_press(int key, t_cube *cube)
@@ -250,7 +280,8 @@ void	ft_ray_init(t_cube *cube, t_ray *ray)
 {
 	ray->fovangle = 60 * (PI / 180);
 	ray->wall_strip_width = 4;
-	ray->rays_num = cube->MapWidth / ray->wall_strip_width;
+	ray->rays_num = cube->MapWidth / 2;
+	ray->rays = ft_calloc(ray->rays_num, sizeof(double));
 	cube->ray = ray;
 }
 
