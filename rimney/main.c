@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/29 14:10:16 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/29 15:10:17 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,16 @@ void	DDA(t_cube *cube, int x1, int y1)
 	}
 }
 
+void	ft_cast_rays(t_cube *cube)
+{
+	int	columnid;
+	int	rayangle;
+
+	columnid = 0;
+	
+	
+}
+
 int	is_a_wall(t_cube *cube, double X, double Y)
 {
 	int	i;
@@ -186,7 +196,6 @@ int	key_press(int key, t_cube *cube)
 		cube->player->turndirection = 1;
 	else if (key == LEFT_KEY)
 		cube->player->turndirection = -1;
-
 	return (0);
 }
 
@@ -237,6 +246,14 @@ int	render(t_cube *cube)
 	return (0);
 }
 
+void	ft_ray_init(t_cube *cube, t_ray *ray)
+{
+	ray->fovangle = 60 * (PI / 180);
+	ray->wall_strip_width = 4;
+	ray->rays_num = cube->MapWidth / ray->wall_strip_width;
+	cube->ray = ray;
+}
+
 void	ft_create_window(t_cube *cube, t_img *img)
 {
 	cube->mlx_init = mlx_init();
@@ -272,7 +289,7 @@ void	ft_img_init(t_img *img)
 	img->addr = NULL;
 }
 
-t_cube	*ft_struct_init(char **argv, t_img *img, t_player *player)
+t_cube	*ft_struct_init(char **argv, t_img *img, t_player *player, t_ray *ray)
 {
 	t_cube *cube;
 	cube = malloc(sizeof(t_cube));
@@ -282,6 +299,7 @@ t_cube	*ft_struct_init(char **argv, t_img *img, t_player *player)
 	ft_get_CF(cube, argv);
 	ft_get_map(cube, argv);
 	ft_init_player(cube, player);
+	ft_ray_init(cube, ray);
 	ft_img_init(img);
 	cube->img = img;
 	ft_create_window(cube, img);
@@ -291,15 +309,16 @@ t_cube	*ft_struct_init(char **argv, t_img *img, t_player *player)
 
 int main(int argc, char **argv)
 {
-    t_cube	*cube;
-	t_img	img;
-	t_player player;
+    t_cube		*cube;
+	t_img		img;
+	t_player	player;
+	t_ray		ray;
 	if(argc !=  2)
 	{
 		printf("Check the args !\n");
 		exit(0);
 	}
-	cube = ft_struct_init(argv, &img, &player);
+	cube = ft_struct_init(argv, &img, &player, &ray);
 	ft_print_cube(cube);
 	ft_free_parsing(cube);
     // system("leaks Cub3d");

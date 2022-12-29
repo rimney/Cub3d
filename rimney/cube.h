@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/29 03:16:08 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/29 15:08:03 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@
 # include "libft/libft.h"
 # include "Get_next_line/get_next_line.h"
 # include <math.h>
+
+typedef struct s_ray
+{
+	int	fovangle;
+	int	rays_num;
+	int wall_strip_width;
+	
+} t_ray;
 
 typedef struct s_img
 {
@@ -71,7 +79,8 @@ typedef	struct	s_cube
 	void		*mlx_window;
 	int			render;
 	t_img		*img;
-	t_player	*player;	
+	t_player	*player;
+	t_ray		*ray;	
 } t_cube;
 
 /********************** Parsing Functions **********************/
@@ -106,7 +115,7 @@ int		ft_check_map(t_cube *cube);
 void	ft_get_player_position(t_cube *cube);
 void	ft_get_map(t_cube *cube, char **argv);
 void	ft_cube_values_init(t_cube *cube);
-t_cube	*ft_struct_init(char **argv, t_img *img, t_player *player);
+t_cube	*ft_struct_init(char **argv, t_img *img, t_player *player, t_ray *ray);
 void	ft_free_parsing(t_cube *cube);
 void	ft_print(char *str, char *s);
 void	ft_print_cube(t_cube *cube);
