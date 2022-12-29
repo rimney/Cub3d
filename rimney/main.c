@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/29 00:55:59 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/29 04:36:43 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,33 +112,78 @@ void	ft_render_lines(t_cube *cube)
 	ft_render_lines_horizental(cube);
 }
 
+int ft_abs(int n) { return ((n > 0) ? n : (n * (-1))); }
+
+void	DDA(t_cube *cube, int x1, int y1)
+{
+	int dx;
+	int dy;
+	int steps;
+	float Xinc;	
+	float Yinc;
+	double X;
+	double Y;
+	int i;
+
+	i = 1;
+	dx = x1 - cube->player->x;
+	dy = y1 - cube->player->y;
+	steps = ft_abs(dx) > ft_abs(dy) ? ft_abs(dx) : ft_abs(dy);
+	Xinc = dx / (float)steps;
+	Yinc = dy / (float)steps;
+	X = cube->player->x;
+	Y = cube->player->y;
+	while(i <= 60)
+	{
+		my_pixel_put(cube->img, round(X), round(Y), 0xFF0000);
+		i++;
+		X += Xinc;
+		Y += Yinc; 
+	}
+}
+
+void ft_drawline(t_cube *cube, int x1, int y1)
+{
+    int dx, dy, p, x, y;
+ 
+dx=x1-cube->player->x;
+dy=y1-cube->player->y;
+ 
+x=cube->player->x;
+y=cube->player->y;
+ 
+p=2*dy-dx;
+ 
+while(x<x1)
+{
+if(p>=0)
+{
+	my_pixel_put(cube->img, x,y, 0xFF0000);
+y=y+1;
+p=p+2*dy-2*dx;
+}
+else
+{
+	my_pixel_put(cube->img, x,y, 0xFF0000);
+p=p+2*dy;
+}
+x=x+1;
+}
+}
+
 void	ft_render_player(t_cube *cube)
 {
-	printf("walk direction >> %f\n", cube->player->walkdirection);
-	printf("turn direction >> %f\n", cube->player->turndirection);
+	// int player_X;
+	// int player_Y;
+	double movestep;
+	// player_X = 
+	movestep = cube->player->walkdirection * cube->player->movespeed;
 	
-	render_block(cube, cube->P_position_x * SCALE, cube->P_posotion_y * SCALE, SCALE / 4, SCALE / 4 , 0xFF0000);
-}
-
-void	ft_move_player_forward(t_cube *cube)
-{
-
-	cube->P_posotion_y -= 1;
-}
-
-void	ft_move_player_backward(t_cube *cube)
-{
-	cube->P_posotion_y += 1;
-}
-
-void	ft_move_player_right(t_cube *cube)
-{
-	cube->P_position_x += 1;
-}
-
-void	ft_move_player_left(t_cube *cube)
-{
-	cube->P_position_x -= 1;
+	cube->player->rotationangle += (cube->player->turndirection * cube->player->rotationspeed);
+	cube->player->x += cos(cube->player->rotationangle) * movestep;
+	cube->player->y += sin(cube->player->rotationangle) * movestep;
+	DDA(cube, cos(cube->player->rotationangle) * 90 * SCALE, sin(cube->player->rotationangle) * 90 * SCALE);
+	render_block(cube, cube->player->x, cube->player->y, SCALE / 4, SCALE / 4 , 0xFF0000);
 }
 
 int	key_press(int key, t_cube *cube)
@@ -151,7 +196,7 @@ int	key_press(int key, t_cube *cube)
 		cube->player->turndirection = 1;
 	else if (key == LEFT_KEY)
 		cube->player->turndirection = -1;
-	printf("EEEE\n");
+
 	return (0);
 }
 
@@ -167,6 +212,7 @@ int	key_release(int key, t_cube *cube)
 		cube->player->turndirection = 0;
 	return (0);
 }
+
 
 int	render(t_cube *cube)
 {
@@ -196,40 +242,35 @@ int	render(t_cube *cube)
 	}
 	ft_render_lines(cube);
 	ft_render_player(cube);
-	mlx_key_hook(cube->mlx_window, key_press, cube);
-	mlx_key_hook(cube->mlx_window, key_release, cube);
-	// if(cube->render)
-	// 	mlx_clear_window(cube->mlx_init, cube->mlx_window);
-	mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, cube->img->img ,ii, jj);
+	 mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, cube->img->img ,ii, jj);
 
 	return (0);
 }
 
 void	ft_create_window(t_cube *cube, t_img *img)
 {
-
-
 	cube->mlx_init = mlx_init();
 	cube->mlx_window = mlx_new_window(cube->mlx_init, cube->MapWidth * SCALE, cube->MapHeight * SCALE, "cube");
 	img->img = mlx_new_image(cube->mlx_init, cube->MapWidth * SCALE, cube->MapHeight * SCALE);
 	img->addr = mlx_get_data_addr(cube->img->img, &img->bpp, &img->size_len, &img->endian);
 	// ft_render_player(cube);
 	cube->img = img;
-
+	mlx_hook(cube->mlx_window, 2, 0, key_press, cube);
+	mlx_hook(cube->mlx_window, 3, 0, key_release, cube);
 	mlx_loop_hook(cube->mlx_init, render, cube);
 	mlx_loop(cube->mlx_init);
 }
 
 void	ft_init_player(t_cube *cube, t_player *player)
 {
-	player->x = cube->P_position_x;
-	player->y = cube->P_posotion_y;
+	player->x = cube->P_position_x * SCALE;
+	player->y = cube->P_posotion_y * SCALE;
 	player->radius = 3;
 	player->turndirection = 0;
 	player->walkdirection = 0;
 	player->rotationangle = PI / 2;
 	player->movespeed = 2.0;
-	player->rotationspeed = 2 * (PI / 100);
+	player->rotationspeed = 2 * (PI / 180);
 	cube->player = player;
 }
 

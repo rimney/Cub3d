@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/29 00:38:38 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/29 03:16:08 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <fcntl.h>
 # include "libft/libft.h"
 # include "Get_next_line/get_next_line.h"
+# include <math.h>
 
 typedef struct s_img
 {
