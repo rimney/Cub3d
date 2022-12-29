@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/29 13:29:50 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/29 14:10:16 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void	DDA(t_cube *cube, int x1, int y1)
 	Yinc = dy / (float)steps;
 	X = cube->player->x;
 	Y = cube->player->y;
-	while(i <= 60)
+	while(i <= steps)
 	{
 		my_pixel_put(cube->img, round(X), round(Y), 0xFF0000);
 		i++;
@@ -172,7 +172,7 @@ void	ft_render_player(t_cube *cube)
 		cube->player->y = player_Y;
 	}
 	// cube->player->y += sin(cube->player->rotationangle) * movestep;
-	DDA(cube, cos(cube->player->rotationangle) * 90 * SCALE, sin(cube->player->rotationangle) * 90 * SCALE);
+	DDA(cube, cube->player->x + cos(cube->player->rotationangle) * SCALE, cube->player->y + sin(cube->player->rotationangle)  * SCALE);
 	render_block(cube, cube->player->x, cube->player->y, SCALE / 4, SCALE / 4 , 0xFF0000);
 }
 
@@ -260,7 +260,7 @@ void	ft_init_player(t_cube *cube, t_player *player)
 	player->walkdirection = 0;
 	player->rotationangle = PI / 3;
 	player->movespeed = 2.0;
-	player->rotationspeed = 2 * (PI / 180);
+	player->rotationspeed = 2 * (PI / 70);
 	cube->player = player;
 }
 
