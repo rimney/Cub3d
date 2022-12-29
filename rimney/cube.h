@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/29 15:48:29 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/29 18:40:12 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,13 @@ typedef struct s_ray
 	int	rays_num;
 	int wall_strip_width;
 	double	*rays;
-	
+	double	wallhitx;
+	double	wallhity;
+	double	distance;
+	double	isup;
+	double 	isdown;
+	double	isright;
+	double	isleft;
 } t_ray;
 
 typedef struct s_img

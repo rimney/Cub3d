@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/29 15:56:38 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/29 19:43:31 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,47 @@ void	DDA(t_cube *cube, int x1, int y1)
 	}
 }
 
+double	normalize_angle(double angle) // ?????
+{
+	int temp;
+	temp = angle;
+	temp = (int)temp % (int)(2 * PI);
+	if(temp < 0)
+		angle = (2 * PI / 2) + angle;
+	return (angle);
+}
+
+void	cast(t_cube *cube, int rayangle, int i)
+{
+	double xinterc;
+	double yinterc;
+	double xstep;
+	double ystep;
+	double nexthtouchx;
+	double nexthtouchy;
+
+	yinterc = floor(cube->player->y / SCALE) * SCALE;
+	yinterc += cube->ray->isdown ? SCALE : 0;
+	
+	xinterc = cube->player->x + (yinterc - cube->player->y) / tan(rayangle);
+	
+	ystep = SCALE;
+	ystep *= cube->ray->isup ? -1 : 1;
+
+	xstep = SCALE / tan(rayangle);
+	xstep *= (cube->ray->isleft && xstep > 0) ? -1 : 1;
+	xstep *= (cube->ray->isright && xstep < 0) ? -1 : 1;
+	nexthtouchx = xinterc;
+	nexthtouchy = yinterc;
+
+	if(cube->ray->isup)
+		nexthtouchy--;
+	
+	printf("%f << is facing up\n", cube->ray->isup);
+	printf("%f << is facing down\n", cube->ray->isdown);
+	DDA(cube, cube->player->x + cos(cube->ray->rays[i]) * (SCALE + 32), cube->player->y + sin(cube->ray->rays[i])  * (SCALE + 32));
+}
+
 void	ft_cast_rays(t_cube *cube)
 {
 	int	columnid;
@@ -151,11 +192,19 @@ void	ft_cast_rays(t_cube *cube)
 	i = 0;
 	columnid = 0;
 	rayangle = cube->player->rotationangle - (cube->ray->fovangle / 2);
-	while(i < cube->ray->rays_num)
+	while(i < 1)
 	{
-		cube->ray->rays[i] = rayangle;
+		printf("%f << RAYANGLE B\n", rayangle);
+		cube->ray->rays[i] = normalize_angle(rayangle);
+		
+		cube->ray->isdown = cube->ray->rays[i] > 0 && cube->ray->rays[i] < PI;
+		cube->ray->isup = !cube->ray->isdown;
+		cube->ray->isright = cube->ray->rays[i] < 0.5 * PI || cube->ray->rays[i] > 1.5 * PI;
+		cube->ray->isleft = !cube->ray->isright;
+	
 		rayangle += cube->ray->fovangle / cube->ray->rays_num;
 		printf("%f << rayangle\n", rayangle);
+		cast(cube, cube->ray->rays[i], i);
 		// printf("%f << fov\n", cube->ray->fovangle);
 		// printf("%d << rays num\n", cube->ray->rays_num);
 		i++;
@@ -164,21 +213,20 @@ void	ft_cast_rays(t_cube *cube)
 	// exit(0);
 }
 
-void	ft_render_rays(t_cube *cube)
-{
-	int i;
-	i = 0;
+// void	ft_render_rays(t_cube *cube)
+// {
+// 	int i;
+// 	i = 0;
 
-	// ft_cast_rays(cube);
-	while(i < cube->ray->rays_num)
-	{
-		// printf("%f << ray\n", cube->ray->rays[i]);
-	DDA(cube, cube->player->x + cos(cube->ray->rays[i]) * (SCALE + 32), cube->player->y + sin(cube->ray->rays[i])  * (SCALE + 32));
+// 	// ft_cast_rays(cube);
+// 	while(i < 1)
+// 	{
+// 		// printf("%f << ray\n", cube->ray->rays[i]);
 
-		i++;
-	}
-	// exit(0);
-}
+// 		i++;
+// 	}
+// 	// exit(0);
+// }
 
 int	is_a_wall(t_cube *cube, double X, double Y)
 {
@@ -209,11 +257,11 @@ void	ft_render_player(t_cube *cube)
 		cube->player->x = player_X;
 		cube->player->y = player_Y;
 	}
-	ft_cast_rays(cube);
 	// cube->player->y += sin(cube->player->rotationangle) * movestep;
-	DDA(cube, cube->player->x + cos(cube->player->rotationangle) * SCALE, cube->player->y + sin(cube->player->rotationangle)  * SCALE);
+	//DDA(cube, cube->player->x + cos(cube->player->rotationangle) * SCALE, cube->player->y + sin(cube->player->rotationangle)  * SCALE);
 	render_block(cube, cube->player->x, cube->player->y, SCALE / 10, SCALE / 10 , 0xFF0000);
-	 ft_render_rays(cube);
+	ft_cast_rays(cube);
+	//ft_render_rays(cube);
 }
 
 int	key_press(int key, t_cube *cube)
@@ -282,7 +330,13 @@ void	ft_ray_init(t_cube *cube, t_ray *ray)
 	ray->wall_strip_width = 4;
 	ray->rays_num = cube->MapWidth / 2;
 	ray->rays = ft_calloc(ray->rays_num, sizeof(double));
+	ray->wallhitx = 0;
+	ray->wallhity = 0;
+	ray->distance = 0;
+	ray->isup = 0;
+	ray->isdown = 0;
 	cube->ray = ray;
+	
 }
 
 void	ft_create_window(t_cube *cube, t_img *img)
@@ -306,7 +360,7 @@ void	ft_init_player(t_cube *cube, t_player *player)
 	player->radius = 3;
 	player->turndirection = 0;
 	player->walkdirection = 0;
-	player->rotationangle = PI / 3;
+	player->rotationangle = PI / 2;
 	player->movespeed = 2.0;
 	player->rotationspeed = 2 * (PI / 70);
 	cube->player = player;
