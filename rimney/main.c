@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/30 04:51:37 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/30 04:57:42 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ double	normalize_angle(double angle) // ?????
 	return (angle);
 }
 
-void	cast(t_cube *cube, double rayangle, int i)
+void	cast(t_cube *cube, double rayangle)
 {
 	double xinterc;
 	double yinterc;
@@ -175,7 +175,6 @@ void	cast(t_cube *cube, double rayangle, int i)
 	double wallhity = 0;
 	int	foundhwallhit;
 
-	i = 0;
 	foundhwallhit = 0;
 	yinterc = floor(cube->player->y / SCALE) * SCALE;
 	yinterc += cube->ray->isdown ? SCALE : 0;
@@ -228,17 +227,17 @@ void	ft_cast_rays(t_cube *cube)
 	i = 0;
 	columnid = 0;
 	rayangle = cube->player->rotationangle - (cube->ray->fovangle / 2);
-	while(i < 1)
+	while(i < cube->ray->rays_num)
 	{
 		printf("%f << RAYANGLE B\n", rayangle);
 		cube->ray->rays[i] = normalize_angle(rayangle);
+		cast(cube, cube->ray->rays[i]);
 		printf("%f << RAYANGLE A\n", rayangle);
 		cube->ray->isdown = cube->ray->rays[i] > 0 && cube->ray->rays[i] < PI;
 		cube->ray->isup = !cube->ray->isdown;
 		cube->ray->isright = cube->ray->rays[i] < 0.5 * PI || cube->ray->rays[i] > 1.5 * PI;
 		cube->ray->isleft = !cube->ray->isright;
 		rayangle += cube->ray->fovangle / cube->ray->rays_num;
-		cast(cube, cube->ray->rays[i], i);
 		printf("%f << rayangle\n", rayangle);
 		// printf("%f << fov\n", cube->ray->fovangle);
 		// printf("%d << rays num\n", cube->ray->rays_num);
