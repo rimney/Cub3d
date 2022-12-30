@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/30 04:25:44 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/30 04:51:37 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ double	normalize_angle(double angle) // ?????
 	return (angle);
 }
 
-void	cast(t_cube *cube, int rayangle, int i)
+void	cast(t_cube *cube, double rayangle, int i)
 {
 	double xinterc;
 	double yinterc;
@@ -177,8 +177,8 @@ void	cast(t_cube *cube, int rayangle, int i)
 
 	i = 0;
 	foundhwallhit = 0;
-	yinterc = ((floor(cube->player->y / SCALE) * SCALE));
-	// yinterc += cube->ray->isdown ? SCALE : 0;
+	yinterc = floor(cube->player->y / SCALE) * SCALE;
+	yinterc += cube->ray->isdown ? SCALE : 0;
 	
 	xinterc = cube->player->x + (yinterc - cube->player->y) / tan(rayangle);
 	
@@ -199,16 +199,14 @@ void	cast(t_cube *cube, int rayangle, int i)
 	printf("%f << is facing right\n", cube->ray->isright);
 	printf("%f << is facing left\n", cube->ray->isleft);
 		printf("%f x<<\n%f y<<\n", wallhitx, wallhity);
-	while(nexthtouchx >= 0 && nexthtouchx <= cube->MapWidth && nexthtouchy >= 0 && nexthtouchy <= cube->MapHeight)
+	while(nexthtouchx >= 0 && nexthtouchx <= cube->MapWidth * SCALE && nexthtouchy >= 0 && nexthtouchy <= cube->MapHeight * SCALE)
 	{
-		if(is_a_wall(cube, nexthtouchx, nexthtouchy))
+		if(!is_a_wall(cube, nexthtouchx / SCALE, nexthtouchy / SCALE))
 		{
-			foundhwallhit = 1;
 			wallhitx = nexthtouchx;
 			wallhity = nexthtouchy;
 			printf("%f << wallhitx\n", wallhitx);
 			printf("%f << wallhity\n", wallhity);
-			exit(0);
 			DDA(cube, wallhitx, wallhity);
 			//DDA(cube, cos(cube->player->x) * SCALE , sin(cube->player->y) * SCALE);
 			break;
