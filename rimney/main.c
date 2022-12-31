@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/30 04:57:42 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/31 21:51:48 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,15 +106,39 @@ void	ft_render_lines_horizental(t_cube *cube)
 	}
 }
 
+void	print_map(t_cube *cube)
+{
+	int i;
+	int j;
+	
+	i = 0;
+	while (cube->Map[i])
+	{
+		j = 0;
+		while (cube->Map[i][j])
+		{
+			printf("[%c]", cube->Map[i][j]);
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
+
+}
+
 int	is_a_wall(t_cube *cube, double X, double Y)
 {
 	int	i;
 	int j;
 	 // theres another case that i gotta check !!
-	i = floor(X);
-	j = floor(Y);
-	//printf("[%c]\n", cube->Map[j][i]);
-	if(cube->Map[i][j] && cube->Map[j][i] == '1')
+	i = floor(Y);
+	j = floor(X);
+	printf("%d << [i]\n", i);
+	printf("%d << [j]\n", j);
+	// print_map(cube);
+	// printf("[%c]\n", cube->Map[i][j]);
+	// exit(0);
+	if(cube->Map[i][j] && cube->Map[i][j] == '1')
 		return (0);
 	return (1);
 }
@@ -275,6 +299,9 @@ void	ft_render_player(t_cube *cube)
 	cube->player->rotationangle += (cube->player->turndirection * cube->player->rotationspeed);
 	player_X = cube->player->x + cos(cube->player->rotationangle) * movestep;
 	player_Y = cube->player->y + sin(cube->player->rotationangle) * movestep;
+	printf("%f << X\n", player_X / SCALE);
+	printf("%f << Y\n", player_Y / SCALE);
+	printf("[[%c]]]\n", cube->Map[(int)(player_Y / SCALE)][(int)(player_X / SCALE)]);
 	if(is_a_wall(cube, player_X / SCALE, player_Y / SCALE))
 	{
 		cube->player->x = player_X;
