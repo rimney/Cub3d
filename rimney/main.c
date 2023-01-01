@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/02 00:09:35 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/02 00:10:19 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,20 +294,15 @@ void	ft_cast_rays(t_cube *cube)
 	rayangle = cube->player->rotationangle - (cube->ray->fovangle / 2);
 	while(i < cube->ray->rays_num)
 	{
-		printf("%f << RAYANGLE B\n", rayangle);
 		cube->ray->rays[i] = normalize_angle(rayangle);
 		cast(cube, cube->ray->rays[i]);
 		DDA(cube, cube->ray->wallhitx, cube->ray->wallhity);
 
-		printf("%f << RAYANGLE A\n", rayangle);
 		cube->ray->isdown = cube->ray->rays[i] > 0 && cube->ray->rays[i] < PI;
 		cube->ray->isup = !cube->ray->isdown;
 		cube->ray->isright = cube->ray->rays[i] < 0.5 * PI || cube->ray->rays[i] > 1.5 * PI;
 		cube->ray->isleft = !cube->ray->isright;
 		rayangle += cube->ray->fovangle / cube->ray->rays_num;
-		printf("%f << rayangle\n", rayangle);
-		// printf("%f << fov\n", cube->ray->fovangle);
-		// printf("%d << rays num\n", cube->ray->rays_num);
 		i++;
 		columnid += 1;
 	}
