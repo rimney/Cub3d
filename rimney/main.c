@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/31 21:59:11 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/02 00:09:35 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,10 @@ int	is_a_wall(t_cube *cube, double X, double Y)
 	j = floor(X);
 	printf("%d << [i]\n", i);
 	printf("%d << [j]\n", j);
+	if(i >= cube->MapHeight || (size_t)j >= ft_strlen(cube->Map[i]))
+		return (0);
 	// print_map(cube);
-	// printf("[%c]\n", cube->Map[i][j]);
+	printf("[%c]\n", cube->Map[i][j]);
 	// exit(0);
 	if(cube->Map[i][j] && cube->Map[i][j] == '1')
 		return (0);
@@ -187,6 +189,11 @@ double	normalize_angle(double angle) // ?????
 	return (angle);
 }
 
+double dbp(double x1, double y1, double x2, double y2)
+{
+	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+}
+
 void	cast(t_cube *cube, double rayangle)
 {
 	double xinterc;
@@ -195,43 +202,38 @@ void	cast(t_cube *cube, double rayangle)
 	double ystep;
 	double nexthtouchx;
 	double nexthtouchy;
-	double wallhitx = 0;
-	double wallhity = 0;
+	double nextvtouchx;
+	double nextvtouchy;
+	double wallhitx;
+	double wallhity;
+	double verwallhitx;
+	double verwallhity;
 	int	foundhwallhit;
 
+	
+	///// H ///////
 	foundhwallhit = 0;
+	wallhitx = 0;
+	wallhity = 0;
 	yinterc = floor(cube->player->y / SCALE) * SCALE;
 	yinterc += cube->ray->isdown ? SCALE : 0;
-	
 	xinterc = cube->player->x + (yinterc - cube->player->y) / tan(rayangle);
-	
 	ystep = SCALE;
 	ystep *= cube->ray->isup ? -1 : 1;
-
 	xstep = SCALE / tan(rayangle);
 	xstep *= (cube->ray->isleft && xstep > 0) ? -1 : 1;
 	xstep *= (cube->ray->isright && xstep < 0) ? -1 : 1;
 	nexthtouchx = xinterc;
 	nexthtouchy = yinterc;
-
-	if(cube->ray->isup)
+	if (cube->ray->isup)
 		nexthtouchy--;
-	
-	printf("%f << is facing up\n", cube->ray->isup);
-	printf("%f << is facing down\n", cube->ray->isdown);
-	printf("%f << is facing right\n", cube->ray->isright);
-	printf("%f << is facing left\n", cube->ray->isleft);
-		printf("%f x<<\n%f y<<\n", wallhitx, wallhity);
-	while(nexthtouchx >= 0 && nexthtouchx <= cube->MapWidth * SCALE && nexthtouchy >= 0 && nexthtouchy <= cube->MapHeight * SCALE)
+	while (nexthtouchx >= 0 && nexthtouchx <= cube->MapWidth * SCALE && nexthtouchy >= 0 && nexthtouchy <= cube->MapHeight * SCALE)
 	{
 		if(!is_a_wall(cube, nexthtouchx / SCALE, nexthtouchy / SCALE))
 		{
+			foundhwallhit = 1;
 			wallhitx = nexthtouchx;
 			wallhity = nexthtouchy;
-			printf("%f << wallhitx\n", wallhitx);
-			printf("%f << wallhity\n", wallhity);
-			DDA(cube, wallhitx, wallhity);
-			//DDA(cube, cos(cube->player->x) * SCALE , sin(cube->player->y) * SCALE);
 			break;
 		}
 		else
@@ -240,6 +242,45 @@ void	cast(t_cube *cube, double rayangle)
 			nexthtouchy += ystep;
 		}
 	}
+
+	/// V ///////
+	int foundvwallhit = 0;
+	
+	verwallhitx = 0;
+	verwallhity = 0;
+	xinterc = floor(cube->player->x / SCALE) * SCALE;
+	xinterc += cube->ray->isright ? SCALE : 0;
+	yinterc = cube->player->y + (xinterc - cube->player->x) * tan(rayangle);
+	xstep = SCALE;
+	xstep *= cube->ray->isleft ? -1 : 1;
+	ystep = SCALE * tan(rayangle);
+	ystep *= (cube->ray->isup && ystep > 0) ? -1 : 1;
+	ystep *= (cube->ray->isdown && ystep < 0) ? -1 : 1;
+	nextvtouchx = xinterc;
+	nextvtouchy = yinterc;
+	if (cube->ray->isleft)
+		nextvtouchx--;
+	
+	while (nextvtouchx >= 0 && nextvtouchx <= cube->MapWidth * SCALE && nextvtouchy >= 0 && nextvtouchy <= cube->MapHeight * SCALE)
+	{
+		if(!is_a_wall(cube, nextvtouchx / SCALE,  nextvtouchy/ SCALE))
+		{
+			foundvwallhit = 1;
+			verwallhitx = nextvtouchx;
+			verwallhity = nextvtouchy;
+			break;
+		}
+		else
+		{
+			nextvtouchx += xstep;
+			nextvtouchy += ystep;
+		}
+	}
+
+	double horhzd = foundhwallhit ? dbp(cube->player->x, cube->player->y, wallhitx, wallhity) : INT_MAX;
+	double verthd = foundvwallhit ? dbp(cube->player->x, cube->player->y, verwallhitx, verwallhity) : INT_MAX;
+	cube->ray->wallhitx = (horhzd < verthd) ? wallhitx : verwallhitx;
+	cube->ray->wallhity = (horhzd < verthd) ? wallhity : verwallhity;
 }
 
 void	ft_cast_rays(t_cube *cube)
@@ -256,6 +297,8 @@ void	ft_cast_rays(t_cube *cube)
 		printf("%f << RAYANGLE B\n", rayangle);
 		cube->ray->rays[i] = normalize_angle(rayangle);
 		cast(cube, cube->ray->rays[i]);
+		DDA(cube, cube->ray->wallhitx, cube->ray->wallhity);
+
 		printf("%f << RAYANGLE A\n", rayangle);
 		cube->ray->isdown = cube->ray->rays[i] > 0 && cube->ray->rays[i] < PI;
 		cube->ray->isup = !cube->ray->isdown;
@@ -410,9 +453,9 @@ void	ft_init_player(t_cube *cube, t_player *player)
 	player->radius = 3;
 	player->turndirection = 0;
 	player->walkdirection = 0;
-	player->rotationangle = PI / 2;
+	player->rotationangle = M_PI_2;
 	player->movespeed = 2.0;
-	player->rotationspeed = 2 * (PI / 70);
+	player->rotationspeed = 2 * (M_PI / 70);
 	cube->player = player;
 }
 

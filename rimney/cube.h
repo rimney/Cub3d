@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/29 18:40:12 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/01 23:28:38 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # define RIGHT_KEY 124
 # define DOWN_KEY 125
 # define UP_KEY 126
-# define PI 3.14159265359
 # include <unistd.h>
 # include <mlx.h>
 # include <stdlib.h>
@@ -30,6 +29,8 @@
 # include "libft/libft.h"
 # include "Get_next_line/get_next_line.h"
 # include <math.h>
+# define PI M_PI
+# define INT_MAX 2147483647
 
 typedef struct s_ray
 {
