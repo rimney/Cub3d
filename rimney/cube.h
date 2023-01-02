@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/01 23:28:38 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/02 20:18:39 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_ray
 	double	*rays;
 	double	wallhitx;
 	double	wallhity;
-	double	distance;
+	double	*distance;
 	double	isup;
 	double 	isdown;
 	double	isright;
@@ -128,5 +128,5 @@ void	ft_free_parsing(t_cube *cube);
 void	ft_print(char *str, char *s);
 void	ft_print_cube(t_cube *cube);
 void	ft_exit(char *str);
-
+void	render3D(t_cube *cube, double distance, int i);
 #endif

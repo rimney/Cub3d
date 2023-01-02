@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/02 04:54:18 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/02 21:32:15 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ int render_block(t_cube *cube, int x, int y, int w, int h, int color)
 	int j;
 
 	i = y;
+	printf("%d <<x\n", x);
+	printf("%d <<y\n", y);
+	printf("%d <<w\n", w);
+	printf("%d <<h\n", h);
 	while(i < y + h)
 	{
 		j = x;
@@ -192,7 +196,7 @@ double dbp(double x1, double y1, double x2, double y2)
 	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
 }
 
-void	cast(t_cube *cube, double rayangle)
+double	cast(t_cube *cube, double rayangle)
 {
 	double xinterc;
 	double yinterc;
@@ -277,10 +281,11 @@ void	cast(t_cube *cube, double rayangle)
 
 	double horhzd = foundhwallhit ? dbp(cube->player->x, cube->player->y, wallhitx, wallhity) : INT_MAX;
 	double verthd = foundvwallhit ? dbp(cube->player->x, cube->player->y, verwallhitx, verwallhity) : INT_MAX;
-
 	cube->ray->wallhitx = (horhzd < verthd) ? wallhitx: verwallhitx;
 	cube->ray->wallhity = (horhzd < verthd) ? wallhity : verwallhity;
-	cube->ray->distance = horhzd < verthd ? horhzd : verthd;
+	return (horhzd < verthd ? horhzd : verthd);
+	// cube->ray->distance[index] = horhzd < verthd ? horhzd : verthd;
+	// exit(0);
 }
 
 void	ft_cast_rays(t_cube *cube)
@@ -288,6 +293,7 @@ void	ft_cast_rays(t_cube *cube)
 	int	columnid;
 	double	rayangle;
 	int i;
+	double distance;
 
 	i = 0;
 	columnid = 0;
@@ -295,16 +301,18 @@ void	ft_cast_rays(t_cube *cube)
 	while(i < cube->ray->rays_num)
 	{
 		cube->ray->rays[i] = normalize_angle(rayangle);
-		cast(cube, cube->ray->rays[i]);
-		DDA(cube, cube->ray->wallhitx, cube->ray->wallhity);
-
+		distance = cast(cube, cube->ray->rays[i]);
+		printf("%f << FF\n", distance);
+		// DDA(cube, cube->ray->wallhitx, cube->ray->wallhity);
 		cube->ray->isdown = cube->ray->rays[i] > 0 && cube->ray->rays[i] < PI;
 		cube->ray->isup = !cube->ray->isdown;
 		cube->ray->isright = cube->ray->rays[i] < 0.5 * PI || cube->ray->rays[i] > 1.5 * PI;
 		cube->ray->isleft = !cube->ray->isright;
 		rayangle += cube->ray->fovangle / cube->ray->rays_num;
-		i++;
+		render3D(cube, distance, i);
+		// exit(0);
 		columnid += 1;
+		i++;
 	}
 	// exit(0);
 }
@@ -380,32 +388,26 @@ int	key_release(int key, t_cube *cube)
 
 
 
-void	render3D(t_cube *cube)
+void	render3D(t_cube *cube, double distance, int i)
 {
-	double i;
-	double ray;
+	// double ray;
 	double raydistance;
 	double dpp;
 	double wallstripeheight;
-	double WD;
-	double HT;
+	int WD;
+	int HT;
 
-	i = 0;
-	WD = cube->MapWidth * SCALE;
-	HT = cube->MapHeight * SCALE;
-	while(i < cube->ray->rays_num - 1)
-	{
-		ray = cube->ray->rays[(int)i];
-		raydistance = cube->ray->distance;
-		dpp = (WD / 2) / tan(cube->ray->fovangle / 2);
-		wallstripeheight = (SCALE / raydistance) * dpp;
-		render_block(cube,
+	WD = 1920;
+	HT = 1080;
+	raydistance = distance;
+	dpp = (WD / 2) / tan(cube->ray->fovangle / 2);
+	i++;
+	wallstripeheight = (SCALE / raydistance) * dpp;
+	render_block(cube,
 			i * cube->ray->wall_strip_width,
 			((HT / 2) - (wallstripeheight / 2)),
-			SCALE,
-		SCALE , 0xE84725);
-		i++;
-	}
+			cube->ray->wall_strip_width,
+			wallstripeheight, 0xE84725);
 }
 
 int	render(t_cube *cube)
@@ -436,7 +438,7 @@ int	render(t_cube *cube)
 	}
 	// ft_render_lines(cube);
 	ft_render_player(cube);
-	render3D(cube);
+	// render3D(cube);
 	 mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, cube->img->img ,ii, jj);
 	// get_rays_data(cube);
 	return (0);
@@ -447,6 +449,7 @@ void	ft_ray_init(t_cube *cube, t_ray *ray)
 	ray->fovangle = 60 * (PI / 180);
 	ray->wall_strip_width = 1;
 	ray->rays_num = cube->MapWidth / 2;
+	ray->distance = ft_calloc(ray->rays_num, sizeof(double));
 	ray->rays = ft_calloc(ray->rays_num, sizeof(double));
 	ray->wallhitx = 0;
 	ray->wallhity = 0;
