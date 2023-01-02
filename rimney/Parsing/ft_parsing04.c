@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:43:41 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/25 23:50:41 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/02 03:15:44 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	ft_parse_map_2(t_cube *cube, char *map)
 	cube->Map[i] = NULL;
 	ft_free_2d(TD_map);
 	ft_print_2d(cube->Map);
+
 }
 
 void	ft_parse_map(t_cube *cube, char **argv, char *arg, int i)

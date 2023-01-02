@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/02 00:10:19 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/02 04:54:18 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,15 @@ void	ft_render_lines_vertical(t_cube *cube)
 
 	i = 0;
 	j = SCALE;
-	while(j < cube->MapWidth * SCALE)
+	while(j < cube->MapWidth * SCALE * 0.2)
 	{
 		i = 0;
-		while(i < cube->MapHeight * SCALE)
+		while(i < cube->MapHeight * SCALE * 0.2)
 		{
 			my_pixel_put(cube->img, j, i, 0xFF0000);
 			i++;
 		}
-		j += SCALE;
+		j += SCALE * 0.2;
 	}
 }
 
@@ -94,15 +94,15 @@ void	ft_render_lines_horizental(t_cube *cube)
 
 	i = 0;
 	j = SCALE;
-	while(j < cube->MapHeight * SCALE)
+	while(j < cube->MapHeight * SCALE * 0.2)
 	{
 		i = 0;
-		while(i < cube->MapWidth * SCALE)
+		while(i < cube->MapWidth * SCALE * 0.2)
 		{
 			my_pixel_put(cube->img, i, j, 0xFF0000);
 			i++;
 		}
-		j += SCALE;
+		j += SCALE * 0.2;
 	}
 }
 
@@ -133,8 +133,6 @@ int	is_a_wall(t_cube *cube, double X, double Y)
 	 // theres another case that i gotta check !!
 	i = floor(Y);
 	j = floor(X);
-	printf("%d << [i]\n", i);
-	printf("%d << [j]\n", j);
 	if(i >= cube->MapHeight || (size_t)j >= ft_strlen(cube->Map[i]))
 		return (0);
 	// print_map(cube);
@@ -279,8 +277,10 @@ void	cast(t_cube *cube, double rayangle)
 
 	double horhzd = foundhwallhit ? dbp(cube->player->x, cube->player->y, wallhitx, wallhity) : INT_MAX;
 	double verthd = foundvwallhit ? dbp(cube->player->x, cube->player->y, verwallhitx, verwallhity) : INT_MAX;
-	cube->ray->wallhitx = (horhzd < verthd) ? wallhitx : verwallhitx;
+
+	cube->ray->wallhitx = (horhzd < verthd) ? wallhitx: verwallhitx;
 	cube->ray->wallhity = (horhzd < verthd) ? wallhity : verwallhity;
+	cube->ray->distance = horhzd < verthd ? horhzd : verthd;
 }
 
 void	ft_cast_rays(t_cube *cube)
@@ -347,7 +347,7 @@ void	ft_render_player(t_cube *cube)
 	}
 	// cube->player->y += sin(cube->player->rotationangle) * movestep;
 	//DDA(cube, cube->player->x + cos(cube->player->rotationangle) * SCALE, cube->player->y + sin(cube->player->rotationangle)  * SCALE);
-	render_block(cube, cube->player->x, cube->player->y, SCALE / 10, SCALE / 10 , 0xFF0000);
+	// render_block(cube, cube->player->x, cube->player->y, SCALE / 10 * 0.2, SCALE / 10 * 0.2, 0xFF0000);
 	ft_cast_rays(cube);
 	//ft_render_rays(cube);
 }
@@ -379,6 +379,35 @@ int	key_release(int key, t_cube *cube)
 }
 
 
+
+void	render3D(t_cube *cube)
+{
+	double i;
+	double ray;
+	double raydistance;
+	double dpp;
+	double wallstripeheight;
+	double WD;
+	double HT;
+
+	i = 0;
+	WD = cube->MapWidth * SCALE;
+	HT = cube->MapHeight * SCALE;
+	while(i < cube->ray->rays_num - 1)
+	{
+		ray = cube->ray->rays[(int)i];
+		raydistance = cube->ray->distance;
+		dpp = (WD / 2) / tan(cube->ray->fovangle / 2);
+		wallstripeheight = (SCALE / raydistance) * dpp;
+		render_block(cube,
+			i * cube->ray->wall_strip_width,
+			((HT / 2) - (wallstripeheight / 2)),
+			SCALE,
+		SCALE , 0xE84725);
+		i++;
+	}
+}
+
 int	render(t_cube *cube)
 {
 	int i;
@@ -396,26 +425,27 @@ int	render(t_cube *cube)
 		while((size_t)j < ft_strlen(cube->Map[i]))
 		{
 			if(cube->Map[i][j] == '1')
-				render_block(cube, j * SCALE, i * SCALE, SCALE, SCALE, 0xFFFFFF);
+				render_block(cube, j * SCALE * 0.2, i * SCALE * 0.2, SCALE * 0.2, SCALE * 0.2, 0xFFFFFF);
 			if(cube->Map[i][j] == '0')
-				render_block(cube, j * SCALE, i * SCALE, SCALE, SCALE, 0x0000FF);
+				render_block(cube, j * SCALE * 0.2, i * SCALE * 0.2, SCALE * 0.2, SCALE * 0.2, 0xFFFFFF);
 			if(is_a_direction(cube->Map[i][j]))
-				render_block(cube, j * SCALE, i * SCALE, SCALE, SCALE, 0x0000FF);
+				render_block(cube, j * SCALE * 0.2, i * SCALE * 0.2, SCALE * 0.2, SCALE * 0.2, 0x0000FF);
 			j++;
 		}
 		i++;
 	}
-	ft_render_lines(cube);
+	// ft_render_lines(cube);
 	ft_render_player(cube);
+	render3D(cube);
 	 mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, cube->img->img ,ii, jj);
-
+	// get_rays_data(cube);
 	return (0);
 }
 
 void	ft_ray_init(t_cube *cube, t_ray *ray)
 {
 	ray->fovangle = 60 * (PI / 180);
-	ray->wall_strip_width = 4;
+	ray->wall_strip_width = 1;
 	ray->rays_num = cube->MapWidth / 2;
 	ray->rays = ft_calloc(ray->rays_num, sizeof(double));
 	ray->wallhitx = 0;
