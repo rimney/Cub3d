@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/04 00:21:21 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/05 01:55:45 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # define RIGHT_KEY 124
 # define DOWN_KEY 125
 # define UP_KEY 126
-# define WINDOW_WIDTH 1920
-# define WINDOW_HEIGHT 1080
+# define WINDOW_WIDTH 1080
+# define WINDOW_HEIGHT 720
 # include <unistd.h>
 # include <mlx.h>
 # include <stdlib.h>
@@ -74,6 +74,8 @@ typedef	struct	s_cube
 {
     double		P_position_x;
     double		P_posotion_y;
+	int			top_pixel;
+	int			bottom_pixel;
     char		*NO; // 0
 	char		*WE; // 2
 	char		*EA; // 3
