@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/04 05:10:38 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/05 23:18:51 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include "Get_next_line/get_next_line.h"
 
 void	render_background(t_cube *cube)
-	int i;
 {
+	int i;
 	int j;
 
 	i = 0;
@@ -55,10 +55,8 @@ int render_block(t_cube *cube, int x, int y, int w, int h, int color)
 	int j;
 
 	i = y;
-	printf("%d <<x\n", x);
-	printf("%d <<y\n", y);
-	printf("%d <<w\n", w);
-	printf("%d <<h\n", h);
+	if(x >= WINDOW_WIDTH || y >= WINDOW_HEIGHT || y + h >= WINDOW_HEIGHT || w + x >= WINDOW_WIDTH)
+		return (0);
 	while(i < y + h)
 	{
 		j = x;
@@ -79,15 +77,15 @@ void	ft_render_lines_vertical(t_cube *cube)
 
 	i = 0;
 	j = SCALE;
-	while(j < cube->MapWidth * SCALE * 0.2)
+	while(j < cube->MapWidth * SCALE)
 	{
 		i = 0;
-		while(i < cube->MapHeight * SCALE * 0.2)
+		while(i < cube->MapHeight * SCALE)
 		{
 			my_pixel_put(cube->img, j, i, 0xFF0000);
 			i++;
 		}
-		j += SCALE * 0.2;
+		j += SCALE;
 	}
 }
 
@@ -98,15 +96,15 @@ void	ft_render_lines_horizental(t_cube *cube)
 
 	i = 0;
 	j = SCALE;
-	while(j < cube->MapHeight * SCALE * 0.2)
+	while(j < cube->MapHeight * SCALE)
 	{
 		i = 0;
-		while(i < cube->MapWidth * SCALE * 0.2)
+		while(i < cube->MapWidth * SCALE)
 		{
 			my_pixel_put(cube->img, i, j, 0xFF0000);
 			i++;
 		}
-		j += SCALE * 0.2;
+		j += SCALE;
 	}
 }
 
@@ -137,10 +135,12 @@ int	is_a_wall(t_cube *cube, double X, double Y)
 	 // theres another case that i gotta check !!
 	i = floor(Y);
 	j = floor(X);
+	// printf("%d << [i]\n", i);
+	// printf("%d << [j]\n", j);
 	if(i >= cube->MapHeight || (size_t)j >= ft_strlen(cube->Map[i]))
 		return (0);
 	// print_map(cube);
-	printf("[%c]\n", cube->Map[i][j]);
+	// printf("[%c]\n", cube->Map[i][j]);
 	// exit(0);
 	if(cube->Map[i][j] && cube->Map[i][j] == '1')
 		return (0);
@@ -155,7 +155,7 @@ void	ft_render_lines(t_cube *cube)
 
 int ft_abs(int n) { return ((n > 0) ? n : (n * (-1))); }
 
-void	DDA(t_cube *cube, int x1, int y1)
+void	DDA(t_cube *cube, int x1, int y1, int color)
 {
 	int dx;
 	int dy;
@@ -176,7 +176,7 @@ void	DDA(t_cube *cube, int x1, int y1)
 	Y = cube->player->y;
 	while(i <= steps)
 	{
-		my_pixel_put(cube->img, round(X), round(Y), 0xFF0000);
+		my_pixel_put(cube->img, round(X), round(Y), color);
 		i++;
 		X += Xinc;
 		Y += Yinc; 
@@ -196,7 +196,25 @@ double dbp(double x1, double y1, double x2, double y2)
 	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
 }
 
-double	cast(t_cube *cube, double rayangle)
+void	ft_clear_window(t_cube *cube)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while(i < WINDOW_HEIGHT)
+	{
+		j = 0;
+		while (j < WINDOW_WIDTH )
+		{
+			my_pixel_put(cube->img, j, i, 0);
+			j++;
+		}
+		i++;
+	}
+}
+
+void	cast(t_cube *cube, double rayangle, int index)
 {
 	double xinterc;
 	double yinterc;
@@ -218,20 +236,18 @@ double	cast(t_cube *cube, double rayangle)
 	wallhitx = 0;
 	wallhity = 0;
 	yinterc = floor(cube->player->y / SCALE) * SCALE;
-	yinterc += cube->ray->isdown ? SCALE : 0;
+	yinterc += cube->ray[index].isdown ? SCALE : 0;
 	xinterc = cube->player->x + (yinterc - cube->player->y) / tan(rayangle);
 	ystep = SCALE;
-	ystep *= cube->ray->isup ? -1 : 1;
+	ystep *= cube->ray[index].isup ? -1 : 1;
 	xstep = SCALE / tan(rayangle);
-	xstep *= (cube->ray->isleft && xstep > 0) ? -1 : 1;
-	xstep *= (cube->ray->isright && xstep < 0) ? -1 : 1;
+	xstep *= (cube->ray[index].isleft && xstep > 0) ? -1 : 1;
+	xstep *= (cube->ray[index].isright && xstep < 0) ? -1 : 1;
 	nexthtouchx = xinterc;
 	nexthtouchy = yinterc;
-	if (cube->ray->isup)
-		nexthtouchy--;
 	while (nexthtouchx >= 0 && nexthtouchx <= cube->MapWidth * SCALE && nexthtouchy >= 0 && nexthtouchy <= cube->MapHeight * SCALE)
 	{
-		if(!is_a_wall(cube, nexthtouchx / SCALE, nexthtouchy / SCALE))
+		if(!is_a_wall(cube, nexthtouchx / SCALE, (nexthtouchy - cube->ray[index].isup )/ SCALE))
 		{
 			foundhwallhit = 1;
 			wallhitx = nexthtouchx;
@@ -251,21 +267,19 @@ double	cast(t_cube *cube, double rayangle)
 	verwallhitx = 0;
 	verwallhity = 0;
 	xinterc = floor(cube->player->x / SCALE) * SCALE;
-	xinterc += cube->ray->isright ? SCALE : 0;
+	xinterc += cube->ray[index].isright ? SCALE : 0;
 	yinterc = cube->player->y + (xinterc - cube->player->x) * tan(rayangle);
 	xstep = SCALE;
-	xstep *= cube->ray->isleft ? -1 : 1;
+	xstep *= cube->ray[index].isleft ? -1 : 1;
 	ystep = SCALE * tan(rayangle);
-	ystep *= (cube->ray->isup && ystep > 0) ? -1 : 1;
-	ystep *= (cube->ray->isdown && ystep < 0) ? -1 : 1;
+	ystep *= (cube->ray[index].isup && ystep > 0) ? -1 : 1;
+	ystep *= (cube->ray[index].isdown && ystep < 0) ? -1 : 1;
 	nextvtouchx = xinterc;
 	nextvtouchy = yinterc;
-	if (cube->ray->isleft)
-		nextvtouchx--;
 	
 	while (nextvtouchx >= 0 && nextvtouchx <= cube->MapWidth * SCALE && nextvtouchy >= 0 && nextvtouchy <= cube->MapHeight * SCALE)
 	{
-		if(!is_a_wall(cube, nextvtouchx / SCALE,  nextvtouchy/ SCALE))
+		if(!is_a_wall(cube, (nextvtouchx - (cube->ray[index].isleft)) / SCALE,  nextvtouchy/ SCALE))
 		{
 			foundvwallhit = 1;
 			verwallhitx = nextvtouchx;
@@ -281,39 +295,39 @@ double	cast(t_cube *cube, double rayangle)
 
 	double horhzd = foundhwallhit ? dbp(cube->player->x, cube->player->y, wallhitx, wallhity) : INT_MAX;
 	double verthd = foundvwallhit ? dbp(cube->player->x, cube->player->y, verwallhitx, verwallhity) : INT_MAX;
-	cube->ray->wallhitx = (horhzd < verthd) ? wallhitx: verwallhitx;
-	cube->ray->wallhity = (horhzd < verthd) ? wallhity : verwallhity;
-	return (horhzd < verthd ? horhzd : verthd);
-	// cube->ray->distance[index] = horhzd < verthd ? horhzd : verthd;
-	// exit(0);
+	cube->ray[index].wallhitx = (horhzd < verthd) ? wallhitx : verwallhitx;
+	cube->ray[index].wallhity = (horhzd < verthd) ? wallhity : verwallhity;
+	cube->ray[index].distance = horhzd < verthd ? horhzd : verthd;
 }
 
 void	ft_cast_rays(t_cube *cube)
 {
-	int	columnid;
+	// int	columnid;
 	double	rayangle;
 	int i;
-	double distance;
 
 	i = 0;
-	columnid = 0;
+	// columnid = 0;
 	rayangle = cube->player->rotationangle - (cube->ray->fovangle / 2);
-	while(i < cube->ray->rays_num)
+	while(i < WINDOW_WIDTH)
 	{
-		cube->ray->rays[i] = normalize_angle(rayangle);
-		distance = cast(cube, cube->ray->rays[i]);
-		printf("%f << FF\n", distance);
-		// DDA(cube, cube->ray->wallhitx, cube->ray->wallhity);
-		cube->ray->isdown = cube->ray->rays[i] > 0 && cube->ray->rays[i] < PI;
-		cube->ray->isup = !cube->ray->isdown;
-		cube->ray->isright = cube->ray->rays[i] < 0.5 * PI || cube->ray->rays[i] > 1.5 * PI;
-		cube->ray->isleft = !cube->ray->isright;
-		rayangle += cube->ray->fovangle / cube->ray->rays_num;
-		render3D(cube, distance, i);
-		// exit(0);
-		columnid += 1;
+		// printf("%f << RAYANGLE B\n", rayangle);
+		cube->ray[i].rays = normalize_angle(rayangle);
+		cast(cube, cube->ray[i].rays, i);
+		//DDA(cube, cube->ray[i].wallhitx, cube->ray[i].wallhity, 0xFF0000);
+		// printf("%f << RAYANGLE A\n", rayangle);
+		cube->ray[i].isdown = cube->ray[i].rays > 0 && cube->ray[i].rays < PI;
+		cube->ray[i].isup = !cube->ray[i].isdown;
+		cube->ray[i].isright = cube->ray[i].rays < 0.5 * PI || cube->ray[i].rays > 1.5 * PI;
+		cube->ray[i].isleft = !cube->ray[i].isright;
+		rayangle += cube->ray[i].fovangle / cube->ray[i].rays_num;
+		// printf("%f << rayangle\n", rayangle);
+		// printf("%f << fov\n", cube->ray->fovangle);
+		// printf("%d << rays num\n", cube->ray->rays_num);
 		i++;
+		// columnid += 1;
 	}
+	// exit(0);
 	// exit(0);
 }
 
@@ -331,7 +345,40 @@ void	ft_cast_rays(t_cube *cube)
 // 	}
 // 	// exit(0);
 // }
+void render3D(t_cube *cube)
+{
+	int i;
+	int j;
+	double pdistance;
+	double dpp;
+	double projectionwallheight;
+	int wallstripeheight;
+	int walltoppixel;
+	int wallbottompixel;
+	
 
+	i = 0;
+	while(i < WINDOW_WIDTH)
+	{
+		pdistance = cube->ray[i].distance * cos(cube->ray[i].rays - cube->player->rotationangle);
+		dpp = (WINDOW_WIDTH / 2) / tan(cube->ray->fovangle / 2);
+		projectionwallheight = (SCALE / pdistance) * dpp;
+		wallstripeheight = (int)projectionwallheight;
+		walltoppixel = (WINDOW_HEIGHT / 2) - (wallstripeheight / 2);
+		walltoppixel =  walltoppixel < 0 ? 0 : walltoppixel;
+		wallbottompixel = (WINDOW_HEIGHT / 2) + (wallstripeheight / 2);
+		wallbottompixel = wallbottompixel > WINDOW_HEIGHT ? WINDOW_HEIGHT : wallbottompixel;
+		j = walltoppixel;
+		while(j < wallbottompixel)
+		{
+			my_pixel_put(cube->img, i, j, 0xFFFFFF);
+			j++;
+		}
+		
+		i++;
+	}
+	// exit(0);
+}
 
 
 void	ft_render_player(t_cube *cube)
@@ -345,20 +392,24 @@ void	ft_render_player(t_cube *cube)
 	cube->player->rotationangle += (cube->player->turndirection * cube->player->rotationspeed);
 	player_X = cube->player->x + cos(cube->player->rotationangle) * movestep;
 	player_Y = cube->player->y + sin(cube->player->rotationangle) * movestep;
-	printf("%f << X\n", player_X / SCALE);
-	printf("%f << Y\n", player_Y / SCALE);
-	printf("[[%c]]]\n", cube->Map[(int)(player_Y / SCALE)][(int)(player_X / SCALE)]);
+	// printf("%f << X\n", player_X / SCALE);
+	// printf("%f << Y\n", player_Y / SCALE);
+	// printf("[[%c]]]\n", cube->Map[(int)(player_Y / SCALE)][(int)(player_X / SCALE)]);
 	if(is_a_wall(cube, player_X / SCALE, player_Y / SCALE))
 	{
 		cube->player->x = player_X;
 		cube->player->y = player_Y;
 	}
 	// cube->player->y += sin(cube->player->rotationangle) * movestep;
-	//DDA(cube, cube->player->x + cos(cube->player->rotationangle) * SCALE, cube->player->y + sin(cube->player->rotationangle)  * SCALE);
-	// render_block(cube, cube->player->x, cube->player->y, SCALE / 10 * 0.2, SCALE / 10 * 0.2, 0xFF0000);
+	//DDA(cube, cube->player->x + cos(cube->player->rotationangle) * SCALE, cube->player->y + sin(cube->player->rotationangle)  * SCALE, 0xFF0000);
+	//render_block(cube, cube->player->x, cube->player->y, SCALE / 10, SCALE / 10 , 0xFF0000);
+	ft_clear_window(cube);
 	ft_cast_rays(cube);
+	render3D(cube);
 	//ft_render_rays(cube);
 }
+
+
 
 int	key_press(int key, t_cube *cube)
 {
@@ -387,29 +438,6 @@ int	key_release(int key, t_cube *cube)
 }
 
 
-
-void	render3D(t_cube *cube, double distance, int i)
-{
-	// double ray;
-	double raydistance;
-	double dpp;
-	double wallstripeheight;
-	int WD;
-	int HT;
-
-	WD = 1920;
-	HT = 1080;
-	raydistance = distance;
-	dpp = (WD / 2) / tan(cube->ray->fovangle / 2);
-	i++;
-	wallstripeheight = (SCALE / raydistance) * dpp;
-	render_block(cube,
-			i * cube->ray->wall_strip_width,
-			((HT / 2) - (wallstripeheight / 2)),
-			cube->ray->wall_strip_width,
-			wallstripeheight, 0xE84725);
-}
-
 int	render(t_cube *cube)
 {
 	int i;
@@ -421,50 +449,57 @@ int	render(t_cube *cube)
 	j = 0;
 	ii = 0;
 	jj = 0;
+	if(cube->render)
+		mlx_clear_window(cube->mlx_init, cube->mlx_window);
 	while(i < cube->MapHeight)
 	{
 		j = 0;
 		while((size_t)j < ft_strlen(cube->Map[i]))
 		{
-			if(cube->Map[i][j] == '1')
-				render_block(cube, j * SCALE * 0.2, i * SCALE * 0.2, SCALE * 0.2, SCALE * 0.2, 0xFFFFFF);
-			if(cube->Map[i][j] == '0')
-				render_block(cube, j * SCALE * 0.2, i * SCALE * 0.2, SCALE * 0.2, SCALE * 0.2, 0xFFFFFF);
-			if(is_a_direction(cube->Map[i][j]))
-				render_block(cube, j * SCALE * 0.2, i * SCALE * 0.2, SCALE * 0.2, SCALE * 0.2, 0x0000FF);
-			j++;
+			// if(cube->Map[i][j] == '1')
+			// 	render_block(cube, j * SCALE, i * SCALE, SCALE, SCALE, 0xFFFFFF);
+			// if(cube->Map[i][j] == '0')
+			// 	render_block(cube, j * SCALE, i * SCALE, SCALE, SCALE, 0x0000FF);
+			// if(is_a_direction(cube->Map[i][j]))
+			// 	render_block(cube, j * SCALE, i * SCALE, SCALE, SCALE, 0x0000FF);
+			 j++;
 		}
 		i++;
 	}
-	// ft_render_lines(cube);
+	//ft_render_lines(cube);
 	ft_render_player(cube);
-	// render3D(cube);
-	 mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, cube->img->img ,ii, jj);
-	// get_rays_data(cube);
+	 mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, cube->img->img ,0, 0);
+	cube->render = 1;
 	return (0);
 }
 
 void	ft_ray_init(t_cube *cube, t_ray *ray)
 {
-	ray->fovangle = 60 * (PI / 180);
-	ray->wall_strip_width = 1;
-	ray->rays_num = cube->MapWidth / 2;
-	ray->distance = ft_calloc(ray->rays_num, sizeof(double));
-	ray->rays = ft_calloc(ray->rays_num, sizeof(double));
-	ray->wallhitx = 0;
-	ray->wallhity = 0;
-	ray->distance = 0;
-	ray->isup = 0;
-	ray->isdown = 0;
+	int i;
+
+	i = 0;
+	ray = ft_calloc(WINDOW_WIDTH, sizeof(t_ray));
+	while(i < WINDOW_WIDTH)
+	{
+		ray[i].fovangle = 60 * (PI / 180);
+		ray[i].wall_strip_width = 1;
+		ray[i].rays_num = WINDOW_WIDTH;
+		ray[i].rays = 0;
+		ray[i].wallhitx = 0;
+		ray[i].wallhity = 0;
+		ray[i].distance = 0;
+		ray[i].isup = 0;
+		ray[i].isdown = 0;
+		i++;
+	}
 	cube->ray = ray;
-	
 }
 
 void	ft_create_window(t_cube *cube, t_img *img)
 {
 	cube->mlx_init = mlx_init();
-	cube->mlx_window = mlx_new_window(cube->mlx_init, 1920, 1080, "cube");
-	img->img = mlx_new_image(cube->mlx_init, cube->MapWidth * SCALE, cube->MapHeight * SCALE);
+	cube->mlx_window = mlx_new_window(cube->mlx_init, WINDOW_WIDTH, WINDOW_HEIGHT, "cube");
+	img->img = mlx_new_image(cube->mlx_init, WINDOW_WIDTH, WINDOW_HEIGHT);
 	img->addr = mlx_get_data_addr(cube->img->img, &img->bpp, &img->size_len, &img->endian);
 	// ft_render_player(cube);
 	cube->img = img;
@@ -483,7 +518,7 @@ void	ft_init_player(t_cube *cube, t_player *player)
 	player->walkdirection = 0;
 	player->rotationangle = M_PI_2;
 	player->movespeed = 2.0;
-	player->rotationspeed = 2 * (M_PI / 70);
+	player->rotationspeed = 3 * (M_PI / 180);
 	cube->player = player;
 }
 
@@ -494,6 +529,8 @@ void	ft_img_init(t_img *img)
 	img->size_len = 0;
 	img->addr = NULL;
 }
+
+
 
 t_cube	*ft_struct_init(char **argv, t_img *img, t_player *player, t_ray *ray)
 {
