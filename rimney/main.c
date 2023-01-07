@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/06 01:40:24 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/07 03:39:16 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int	is_a_wall(t_cube *cube, double X, double Y)
 	j = floor(X);
 	// printf("%d << [i]\n", i);
 	// printf("%d << [j]\n", j);
-	if(i <= cube->MapHeight && (size_t)j <= ft_strlen(cube->Map[i]))
+	if(i <= cube->MapHeight && (size_t)j < ft_strlen(cube->Map[i]))
 	{
 		// printf("%d << i \n", i);
 		// printf("%d << j \n", j);
