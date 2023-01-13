@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/28 22:28:29 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/13 02:07:01 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,18 @@ typedef struct s_img
 	char	*addr;
 } t_img;
 
+typedef struct s_player
+{
+	double angle;
+	int turndirection;
+	int	walkdirection;
+	int	movespeed;
+	int	rotationspeed;
+} t_player;
+
 typedef	struct	s_cube
 {
+	int test;
     double		P_position_x;
     double		P_posotion_y;
     char	*NO; // 0
@@ -56,6 +66,7 @@ typedef	struct	s_cube
 	void	*mlx_init;
 	void	*mlx_window;
 	t_img	*img;
+	t_player *player;
 } t_cube;
 
 /********************** Parsing Functions **********************/
@@ -90,7 +101,7 @@ int	ft_check_map(t_cube *cube);
 void	ft_get_player_position(t_cube *cube);
 void	ft_get_map(t_cube *cube, char **argv);
 void	ft_cube_values_init(t_cube *cube);
-t_cube	*ft_struct_init(char **argv, t_img *img);
+void	ft_struct_init(char **argv, t_cube *cube);
 void	ft_free_parsing(t_cube *cube);
 void ft_print(char *str, char *s);
 void	ft_print_cube(t_cube *cube);

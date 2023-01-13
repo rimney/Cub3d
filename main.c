@@ -3,214 +3,113 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:23 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/27 21:13:47 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/13 02:07:25 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 #include "Get_next_line/get_next_line.h"
+#include <math.h>
 
-void	render_background(t_cube *cube)
+
+
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
+void DrawCircle(int x, int y, int color, t_img *img);
+void 	draw_line(int x, int y, int color, t_img *img);
+void ft_draw(t_cube *cube);
+int keyhook(int key, t_cube *cube)
 {
-	int i;
-	int j;
-
-	i = 0;
-	while (i < cube->MapHeight * SCALE)
-	{
-		j = 0;
-		while(j < cube->MapWidth * SCALE)
-		{
-			mlx_pixel_put(cube->mlx_init, cube->mlx_window, j, i, 0xFCD088);
-			j++;
-		}
-		i++;
-	}
-}
-
-// void	my_pixel_put(t_cube *cube, int x, int y, int color)
-// {
-// 	char *pixel;
-// 	int i;
-
-// 	i = 0;
-// 	pixel = cube->img->addr + (y * cube->img->size_len + x * (cube->img->bpp / 8));
-// 	while (i >= 0)
-// 	{
-// 		if(cube->img->endian)
-// 			*pixel++ = (color >> i) & 0xFF;
-// 		else
-// 			*pixel++ = (color >> (cube->img->bpp - 8 - i)) & 0xFF;
-// 		i -= 8;
-// 	}
-// }
-
-void	my_pixel_put(t_cube *cube, int x, int y, int color)
-{
-	char    *pixel;
-
-    pixel = cube->img->addr + (y * cube->img->size_len + x * (cube->img->bpp / 8));
-	*(int *)pixel = color;
-}
-
-int render_block(t_cube *cube, int x, int y, int w, int h, int color)
-{
-	int i;
-	int j;
-
-	i = y;
-	while(i < y + h)
-	{
-		j = x;
-		while (j < w + x)
-		{
-			my_pixel_put(cube, j, i, color);
-			j++;
-		}
-		i++;
-	}
-	return (0);
-}
-
-void	ft_render_lines_vertical(t_cube *cube)
-{
-	int i;
-	int j;
-
-	i = 0;
-	j = SCALE;
-	while(j < cube->MapWidth * SCALE)
-	{
-		i = 0;
-		while(i < cube->MapHeight * SCALE)
-		{
-			my_pixel_put(cube, j, i, 0xFF0000);
-			i++;
-		}
-		j += SCALE;
-	}
-}
-
-void	ft_render_lines_horizental(t_cube *cube)
-{
-	int i;
-	int j;
-
-	i = 0;
-	j = SCALE;
-	while(j < cube->MapHeight * SCALE)
-	{
-		i = 0;
-		while(i < cube->MapWidth * SCALE)
-		{
-			my_pixel_put(cube, i, j, 0xFF0000);
-			i++;
-		}
-		j += SCALE;
-	}
-}
-
-void	ft_render_lines(t_cube *cube)
-{
-	ft_render_lines_vertical(cube);
-	ft_render_lines_horizental(cube);
-}
-
-void	ft_render_player(t_cube *cube)
-{
-	int i;
-	int j;
-
-	i = cube->P_position_x;
-	j = cube->P_posotion_y;
-	my_pixel_put(cube, cube->P_position_x * SCALE, cube->P_posotion_y * SCALE, 0xFFFF00);
-	my_pixel_put(cube, cube->P_position_x * SCALE + 1, cube->P_posotion_y * SCALE, 0xFFFF00);
-	my_pixel_put(cube, cube->P_position_x * SCALE + 2, cube->P_posotion_y * SCALE, 0xFFFF00);
-	my_pixel_put(cube, cube->P_position_x * SCALE, cube->P_posotion_y * SCALE + 1, 0xFFFF00);
-	my_pixel_put(cube, cube->P_position_x * SCALE, cube->P_posotion_y * SCALE + 2, 0xFFFF00);
-	my_pixel_put(cube, cube->P_position_x * SCALE - 1, cube->P_posotion_y * SCALE, 0xFFFF00);
-	my_pixel_put(cube, cube->P_position_x * SCALE - 2, cube->P_posotion_y * SCALE, 0xFFFF00);
-	my_pixel_put(cube, cube->P_position_x * SCALE, cube->P_posotion_y - 1 * SCALE, 0xFFFF00);
-	my_pixel_put(cube, cube->P_position_x * SCALE, cube->P_posotion_y - 2 * SCALE, 0xFFFF00);
-}
-
-// void	ft_move_player_forward(t_cube *cube, int x, int y)
-// {
-// 	y = 0;
-// 	my_pixel_put(cube, cube->P_position_x * SCALE, cube->P_posotion_y * SCALE + y, 0xFFFF00);
-
-// }
-
-int	key_hook(int key, t_cube *cube)
-{
-	printf("%d <<\n", key);
-	if(key == 0)
-		printf("A\n");
-	if(key == 1)
-		printf("S\n");
-	if(key == 2)
-		printf("D\n");
-	if (key == 256)
-	{
-		// ft_move_player_forward(cube, cube->P_position_x * SCALE, cube->P_posotion_y * SCALE);
-		printf("W\n");
-	}
-	if (key == 123)
-		printf("LEFT\n");
-	if (key == 124)
-		printf("right\n");
-	if (key == 125)
-		printf("DOWN\n");
 	if (key == 126)
-		printf("UP\n");
-	if(cube)
-		return (0);
+	{
+		cube->P_position_x += cos(cube->player->angle);
+		cube->P_posotion_y += sin(cube->player->angle);
+		ft_draw(cube);
+	}
 	return (0);
 }
 
-int	render(t_cube *cube, t_img *img)
+void	rander_player(int x, int y, int color, t_cube *cube)
+{
+	x= 0;
+	y = 0;
+	DrawCircle(cube->P_position_x * SCALE + 18, cube->P_posotion_y * SCALE + 18, color, cube->img);
+}
+
+void DrawCircle(int x, int y, int color, t_img *img)
+{
+      static const double PI = 3.1415926535;
+      double i, angle, x1, y1;
+	  int k;
+	  
+	  k = 0;
+	  while (k < 5)
+	  {
+		for(i = 0; i < 360; i += 0.1)
+		{
+				angle = i;
+				x1 = k * cos(angle * PI / 180);
+				y1 = k * sin(angle * PI / 180);
+				my_mlx_pixel_put(img, x + x1, y + y1, color);
+		}
+		k++;
+	  }
+}
+
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
+{
+	char	*dst;
+	dst = img->addr + (y * img->size_len + x * (img->bpp / 8));
+	*(unsigned int*)dst = color;
+}
+
+void render_rect(int x, int y, t_img *img, unsigned int color)
 {
 	int i;
 	int j;
 
+	i = 4;
+	while(i < SCALE)
+	{
+		j = 4;
+		while (j < SCALE)
+		{
+			my_mlx_pixel_put(img, x + i, y + j, color);
+			j++;
+		}
+		i++;
+	}
+}
+
+void render_cube(t_cube *cube)
+{
+	int i;
+	int j;
+	
 	i = 0;
-	j = 0;
-	img->addr = mlx_get_data_addr(cube->img->img, &img->bpp, &img->size_len, &img->endian);
-	while(i < cube->MapHeight)
+	while (cube->Map[i])
 	{
 		j = 0;
-		while((size_t)j < ft_strlen(cube->Map[i]))
+		while (cube->Map[i][j])
 		{
 			if(cube->Map[i][j] == '1')
-				render_block(cube, j * SCALE, i * SCALE, SCALE, SCALE, 0xFFFFFF);
-			if(cube->Map[i][j] == '0')
-				render_block(cube, j * SCALE, i * SCALE, SCALE, SCALE, 0x0000FF);
-			if(is_a_direction(cube->Map[i][j]))
-				render_block(cube, j * SCALE, i * SCALE, SCALE, SCALE, 0x0000FF);
+				render_rect(j * SCALE, i * SCALE, cube->img, 0x00b8df10);
+			if(cube->Map[i][j] == '0' || cube->Map[i][j] == 'S')
+				render_rect(j * SCALE, i * SCALE, cube->img, 0x00390879);
 			j++;
 		}
 		i++;
 	}
-	ft_render_lines(cube);
-	ft_render_player(cube);
-	return (0);
 }
 
-
-void	ft_create_window(t_cube *cube, t_img *img)
+void ft_draw(t_cube *cube)
 {
-	int i = 0;
-	int j = 0;
-
-	cube->mlx_init = mlx_init();
-	cube->mlx_window = mlx_new_window(cube->mlx_init, cube->MapWidth * SCALE, cube->MapHeight * SCALE, "cube");
-	img->img = mlx_new_image(cube->mlx_init, cube->MapWidth * SCALE, cube->MapHeight * SCALE);
-	render(cube, img);
-	mlx_key_hook(cube->mlx_window, key_hook, cube);
-	mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, img->img ,i, j);
+	render_cube(cube);
+	rander_player(cube->P_position_x, cube->P_posotion_y, 0x00FF0000, cube);
+	mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, cube->img->img, 0, 0);
+	mlx_key_hook(cube->mlx_window, keyhook, cube);
 	mlx_loop(cube->mlx_init);
 }
 
@@ -222,33 +121,45 @@ void	ft_img_init(t_img *img)
 	img->addr = NULL;
 }
 
-t_cube	*ft_struct_init(char **argv, t_img *img)
+void ft_init_player(t_player *player)
 {
-	t_cube *cube;
-	cube = malloc(sizeof(t_cube));
+	player->angle = M_PI / 2;
+	player->movespeed = 2;
+	player->rotationspeed = 2 * 3.1415926535 / 180;
+	player->turndirection = 0;
+	player->walkdirection = 0;	
+}
+
+void	ft_struct_init(char **argv, t_cube *cube)
+{
 	ft_cube_values_init(cube);
 	cube->files_f = ft_files_f_init();
 	ft_get_xpms(cube, argv);
 	ft_get_CF(cube, argv);
 	ft_get_map(cube, argv);
-	ft_img_init(img);
-	cube->img = img;
-	ft_create_window(cube, img);
-
-	return (cube);
+	ft_img_init(cube->img);
+	ft_init_player(cube->player);
 }
 
 int main(int argc, char **argv)
 {
     t_cube	*cube;
-	t_img	img;
+
+	cube = malloc(sizeof(t_cube));
+	cube->player = malloc(sizeof(t_player));
+	cube->img = malloc(sizeof(t_img));
+
 	if(argc !=  2)
 	{
 		printf("Check the args !\n");
 		exit(0);
 	}
-	cube = ft_struct_init(argv, &img);
+	ft_struct_init(argv, cube);
+			cube->mlx_init = mlx_init();
+	cube->mlx_window = mlx_new_window(cube->mlx_init, cube->MapWidth * SCALE, cube->MapHeight * SCALE, "Cube3D");
+	cube->img->img = mlx_new_image(cube->mlx_init, cube->MapWidth * SCALE, cube->MapHeight * SCALE);
+	cube->img->addr = mlx_get_data_addr(cube->img->img, &cube->img->bpp, &cube->img->size_len, &cube->img->endian);
 	ft_print_cube(cube);
+	ft_draw(cube);
 	ft_free_parsing(cube);
-    // system("leaks Cub3d");
 }
