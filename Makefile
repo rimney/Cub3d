@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rimney <rimney@student.42.fr>              +#+  +:+       +#+         #
+#    By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/17 01:48:17 by rimney            #+#    #+#              #
-#    Updated: 2022/12/23 00:08:39 by rimney           ###   ########.fr        #
+#    Updated: 2023/01/13 03:04:50 by mrobaii          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ GNL_SRCS = Get_next_line/get_next_line.c \
 MLX = -lmlx -framework OpenGL -framework AppKit
 CC = cc
 FLAGS = -Wall -Wextra -Werror -g -fsanitize=address
-SRCS = main.c \
+SRCS = Cube3D.c \
 		parsing/ft_parsing00.c \
 		parsing/ft_parsing01.c \
 		parsing/ft_parsing02.c \
@@ -26,6 +26,8 @@ SRCS = main.c \
 		parsing/ft_parsing04.c \
 		parsing/ft_parsing05.c \
 		parsing/ft_parsing06.c \
+		Cub_draw.c \
+		Cub3D_init.c \
 
 all : $(LIBFTA)
 

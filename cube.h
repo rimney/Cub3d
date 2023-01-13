@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/13 02:07:01 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/13 03:03:28 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 #include <fcntl.h>
 #include "libft/libft.h"
 #include "Get_next_line/get_next_line.h"
+#include <math.h>
 
 typedef struct s_img
 {
@@ -103,8 +104,14 @@ void	ft_get_map(t_cube *cube, char **argv);
 void	ft_cube_values_init(t_cube *cube);
 void	ft_struct_init(char **argv, t_cube *cube);
 void	ft_free_parsing(t_cube *cube);
-void ft_print(char *str, char *s);
+void 	ft_print(char *str, char *s);
 void	ft_print_cube(t_cube *cube);
 void	ft_exit(char *str);
-
+void	ft_init_player(t_player *player);
+void	ft_img_init(t_img *img);
+void ft_mlx_init(t_cube *cube);
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
+void rectengale(int x, int y, t_img *img, unsigned int color);
+void render_map(t_cube *cube);
+void cub_draw(t_cube *cube);
 #endif
