@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/13 03:03:28 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/14 01:27:49 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ typedef struct s_player
 	double angle;
 	int turndirection;
 	int	walkdirection;
-	int	movespeed;
-	int	rotationspeed;
+	double	movespeed;
+	double	rotationspeed;
 } t_player;
 
 typedef	struct	s_cube
@@ -107,11 +107,12 @@ void	ft_free_parsing(t_cube *cube);
 void 	ft_print(char *str, char *s);
 void	ft_print_cube(t_cube *cube);
 void	ft_exit(char *str);
-void	ft_init_player(t_player *player);
+void	ft_init_player(t_cube *cube);
 void	ft_img_init(t_img *img);
 void ft_mlx_init(t_cube *cube);
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 void rectengale(int x, int y, t_img *img, unsigned int color);
 void render_map(t_cube *cube);
-void cub_draw(t_cube *cube);
+int cub_draw(t_cube *cube);
+void update_player(t_cube *cube);
 #endif

@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:00:33 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/13 03:01:18 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/14 22:32:48 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,25 @@ void	ft_img_init(t_img *img)
 	img->addr = NULL;
 }
 
-void ft_init_player(t_player *player)
+void ft_init_player(t_cube *cube)
 {
-	player->angle = M_PI / 2;
-	player->movespeed = 2;
-	player->rotationspeed = 2 * 3.1415926535 / 180;
-	player->turndirection = 0;
-	player->walkdirection = 0;	
+	if (cube->Psp == 'S')
+		cube->player->angle = 180 * M_PI / 180;
+	else if (cube->Psp == 'N')
+		cube->player->angle = 360 * M_PI / 180;
+	else if (cube->Psp == 'W')
+		cube->player->angle = 270 * M_PI / 180;
+	else
+		cube->player->angle = 90 * M_PI / 180;
+	cube->player->movespeed = 0.3;
+	cube->player->rotationspeed = 4 * (M_PI / 180);
+	cube->player->turndirection = 0;
+	cube->player->walkdirection = 0;
 }
 
 void ft_mlx_init(t_cube *cube)
 {
 	cube->mlx_init = mlx_init();
-	cube->img->img = mlx_new_image(cube->mlx_init, cube->MapWidth * SCALE, cube->MapWidth * SCALE);
-	cube->img->addr = mlx_get_data_addr(cube->img->img, &cube->img->bpp, &cube->img->size_len, &cube->img->endian);
 	cube->mlx_window = mlx_new_window(cube->mlx_init, cube->MapWidth * SCALE, cube->MapHeight * SCALE, "Cub3D");
 }
 
@@ -45,6 +50,8 @@ void	ft_struct_init(char **argv, t_cube *cube)
 	ft_get_CF(cube, argv);
 	ft_get_map(cube, argv);
 	ft_img_init(cube->img);
-	ft_init_player(cube->player);
+	ft_init_player(cube);
 	ft_mlx_init(cube);
+	cube->P_position_x *= SCALE;
+	cube->P_position_x *= SCALE;
 }
