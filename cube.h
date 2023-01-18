@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/14 01:27:49 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/18 06:02:07 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ typedef struct s_player
 	int	walkdirection;
 	double	movespeed;
 	double	rotationspeed;
+	double fov;
+	int		num_of_rays;
 } t_player;
 
 typedef	struct	s_cube
@@ -71,7 +73,7 @@ typedef	struct	s_cube
 } t_cube;
 
 /********************** Parsing Functions **********************/
-
+int hasawall(int x, int y, t_cube *cube);
 void	ft_get_NO(t_cube *cube, char *line);
 void	ft_get_SO(t_cube *cube, char *line);
 void	ft_get_WE(t_cube *cube, char *line);

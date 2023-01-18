@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:03:45 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/14 22:30:03 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/18 04:36:44 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void cub_update()
 }
 int hasawall(int x, int y, t_cube *cube)
 {
-	if ((x < 0 || x > cube->MapHeight) || (y < 0 || y > cube->MapWidth))
+	if ((x < 0 || x > cube->MapWidth) || (y < 0 || y > cube->MapHeight))
 		return (0);
 	if (cube->Map[y][x] != '1')
 		return (1);
@@ -68,7 +68,7 @@ int release_key_hook(int key, t_cube *cube)
 	return (0);
 }
 
-void test(t_cube *cube)
+void ft_new_image(t_cube *cube)
 {
 	cube->img->img = mlx_new_image(cube->mlx_init, cube->MapWidth * SCALE, cube->MapWidth * SCALE);
 	cube->img->addr = mlx_get_data_addr(cube->img->img, &cube->img->bpp, &cube->img->size_len, &cube->img->endian);

@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:00:33 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/14 22:32:48 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/18 06:35:59 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void ft_init_player(t_cube *cube)
 	cube->player->rotationspeed = 4 * (M_PI / 180);
 	cube->player->turndirection = 0;
 	cube->player->walkdirection = 0;
+	cube->player->fov = 60 * (M_PI / 180);
+	cube->player->num_of_rays = (cube->MapHeight * SCALE);
 }
 
 void ft_mlx_init(t_cube *cube)
@@ -52,6 +54,11 @@ void	ft_struct_init(char **argv, t_cube *cube)
 	ft_img_init(cube->img);
 	ft_init_player(cube);
 	ft_mlx_init(cube);
-	cube->P_position_x *= SCALE;
-	cube->P_position_x *= SCALE;
 }
+
+// void	resize_angle(t_cube *cube)
+// {
+// 	cube->player->angle = cube->player->angle % (M_PI * 2);
+// 	if(cube->player->angle < 0)
+// 		cube->player->angle + (2 * M_PI);
+// }
