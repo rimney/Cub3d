@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing06.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:44:53 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/23 00:07:42 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/18 13:27:47 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_cube_values_init(t_cube *cube)
 	cube->MapHeight = 0;
 	cube->MapWidth = 0;
 	cube->P_position_x = 0;
-	cube->P_posotion_y = 0;
+	cube->P_position_y = 0;
 	cube->Map = NULL;
 }
 
@@ -63,6 +63,6 @@ void	ft_print_cube(t_cube *cube)
 	printf("C RGB >> %d\n", cube->C);
 	printf("F RGB >> %d\n", cube->F);
 	printf("Player Px >> %f \n", cube->P_position_x);
-	printf("Player Py >> %f \n", cube->P_posotion_y);
+	printf("Player Py >> %f \n", cube->P_position_y);
 	printf("Player Psp >> %c\n", cube->Psp);
 }

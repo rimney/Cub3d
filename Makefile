@@ -6,7 +6,7 @@
 #    By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/17 01:48:17 by rimney            #+#    #+#              #
-#    Updated: 2023/01/13 03:04:50 by mrobaii          ###   ########.fr        #
+#    Updated: 2023/01/18 18:52:31 by mrobaii          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS = Cube3D.c \
 		parsing/ft_parsing06.c \
 		Cub_draw.c \
 		Cub3D_init.c \
+		Drawing_utils.c \
 
 all : $(LIBFTA)
 

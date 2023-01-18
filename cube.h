@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/18 06:02:07 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/18 19:11:45 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,22 @@ typedef struct s_player
 	int	walkdirection;
 	double	movespeed;
 	double	rotationspeed;
-	double fov;
-	int		num_of_rays;
+
 } t_player;
+
+typedef struct const_t
+{
+	int	num_of_rays;
+	double fov;
+	int		height;
+	int		width;
+}	t_const;
 
 typedef	struct	s_cube
 {
 	int test;
     double		P_position_x;
-    double		P_posotion_y;
+    double		P_position_y;
     char	*NO; // 0
 	char	*WE; // 2
 	char	*EA; // 3
@@ -70,6 +77,7 @@ typedef	struct	s_cube
 	void	*mlx_window;
 	t_img	*img;
 	t_player *player;
+	t_const *stable;
 } t_cube;
 
 /********************** Parsing Functions **********************/
@@ -111,10 +119,15 @@ void	ft_print_cube(t_cube *cube);
 void	ft_exit(char *str);
 void	ft_init_player(t_cube *cube);
 void	ft_img_init(t_img *img);
-void ft_mlx_init(t_cube *cube);
-void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
-void rectengale(int x, int y, t_img *img, unsigned int color);
+void 	ft_mlx_init(t_cube *cube);
+void	my_mlx_pixel_put(t_cube *cube, int x, int y, int color);
+void rectengale(int x, int y, t_cube *cube, unsigned int color);
 void render_map(t_cube *cube);
 int cub_draw(t_cube *cube);
 void update_player(t_cube *cube);
+void	init_const_vr(t_cube *cube);
+int is_a_wall(int x, int y, t_cube *cube);
+void ft_new_image(t_cube *cube);
+void ft_draw_line(int X0, int Y0, int X1, int Y1, t_cube *cube, unsigned int color);
+void	draw_circle(int x, int y, t_cube *cube, unsigned int color);
 #endif

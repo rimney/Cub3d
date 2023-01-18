@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing05.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:44:18 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/25 23:51:21 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/18 13:27:47 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,14 @@ void	ft_get_player_position(t_cube *cube)
 		i = 0;
 		while((size_t)i < ft_strlen(cube->Map[j]))
 		{
-			if(is_a_direction(cube->Map[j][i]) && !cube->P_position_x && !cube->P_posotion_y)
+			if(is_a_direction(cube->Map[j][i]) && !cube->P_position_x && !cube->P_position_y)
 			{
 				cube->Psp = cube->Map[j][i];
 				cube->P_position_x = i;
-				cube->P_posotion_y = j;
+				cube->P_position_y = j;
 				i++;
 			}
-			if(is_a_direction(cube->Map[j][i]) && cube->P_position_x && cube->P_posotion_y)
+			if(is_a_direction(cube->Map[j][i]) && cube->P_position_x && cube->P_position_y)
 				ft_exit("Duplicate Direction");
 			else
 				i++;

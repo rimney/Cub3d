@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:03:45 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/18 04:36:44 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/18 20:01:05 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void cub_update()
 {
 
 }
-int hasawall(int x, int y, t_cube *cube)
+int is_a_wall(int x, int y, t_cube *cube)
 {
-	if ((x < 0 || x > cube->MapWidth) || (y < 0 || y > cube->MapHeight))
-		return (0);
-	if (cube->Map[y][x] != '1')
+	if (x < 0 || x > cube->stable->width || y < 0 || y > cube->stable->height)
+		return (1);
+	if (x < (double)ft_strlen(cube->Map[y]) && cube->Map[y][x] == '1')
 		return (1);
 	return (0);
 }
@@ -32,11 +32,11 @@ void update_player(t_cube *cube)
 
 		movestep = cube->player->walkdirection * cube->player->movespeed;
 		x = cube->P_position_x + cos(cube->player->angle) * movestep;
-		y = cube->P_posotion_y + sin(cube->player->angle) * movestep;
-		if(hasawall(x, y, cube))
+		y = cube->P_position_y + sin(cube->player->angle) * movestep;
+		if(!is_a_wall(x / SCALE, y / SCALE, cube) && x > 0 && x < cube->stable->width && y > 0 && y < cube->stable->height)
 		{
 			cube->P_position_x = x;
-			cube->P_posotion_y = y;
+			cube->P_position_y = y;
 		}
 		cube->player->angle += cube->player->turndirection * cube->player->rotationspeed;
 	
@@ -70,18 +70,18 @@ int release_key_hook(int key, t_cube *cube)
 
 void ft_new_image(t_cube *cube)
 {
-	cube->img->img = mlx_new_image(cube->mlx_init, cube->MapWidth * SCALE, cube->MapWidth * SCALE);
+	cube->img->img = mlx_new_image(cube->mlx_init, cube->stable->width, cube->stable->height);
 	cube->img->addr = mlx_get_data_addr(cube->img->img, &cube->img->bpp, &cube->img->size_len, &cube->img->endian);
 }
 
 int main(int argc, char **argv)
 {
     t_cube	*cube;
-
+	
 	cube = malloc(sizeof(t_cube));
 	cube->player = malloc(sizeof(t_player));
 	cube->img = malloc(sizeof(t_img));
-
+	cube->stable = malloc(sizeof(t_const));
 	if(argc !=  2)
 	{
 		printf("Check the args !\n");
