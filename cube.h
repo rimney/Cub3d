@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/18 19:11:45 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/19 23:18:07 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,8 @@
 # define LEFT_KEY 123
 # define RIGHT_KEY 124
 # define DOWN_KEY 125
-# define W_KEY 13
-# define S_KEY 1
-# define A_KEY 0
-# define D_KEY 2
 #include <unistd.h>
+#include <limits.h>
 #include <mlx.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -46,7 +43,10 @@ typedef struct s_player
 	int	walkdirection;
 	double	movespeed;
 	double	rotationspeed;
-
+	double	verticalx;
+	double	verticaly;
+	double	horizx;
+	double	horizy;
 } t_player;
 
 typedef struct const_t
