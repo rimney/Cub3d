@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 02:58:41 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/18 20:25:35 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/19 18:05:25 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,32 +71,39 @@ void cast_horizntal(t_cube *cube, double angle)
 {
 
 	double xstep, ystep, xintercept, yintercept;
-	int	xnext, ynext;
+	double	xnext, ynext;
 	
 	yintercept = floor(cube->P_position_y / SCALE) * SCALE;
+	if(is_down(angle))
+		yintercept += SCALE;
 	xintercept = cube->P_position_x + (yintercept - cube->P_position_y) / tan(angle);
 	ystep = SCALE;
 	xstep =  SCALE / tan(angle);
 	if (!is_down(angle))
 		ystep *= -1;
-	if(is_down(angle))
-		ystep += 32;
-	xnext = xstep;
-	ynext = ystep;
-	
-	while(xnext > 0 && xnext < cube->stable->width && ynext > 0 && ynext < cube->stable->width)
+	if (!is_right(angle) && xstep > 0)
+		xstep *= -1;
+	else  if (is_right(angle) && xstep < 0)
+		xstep *= -1;
+		
+	xnext = xintercept;
+	ynext = yintercept;
+	if(!is_down(angle))
+		ynext -= 1;
+	while (xnext >= 0 && xnext < cube->stable->width && ynext >= 0 && ynext < cube->stable->height)
 	{
-		if (is_a_wall(xnext, ynext, cube))
-		{printf("%d | %d\n", xnext, ynext);
-	exit(0);
-			ft_draw_line(cube->P_position_x, cube->P_position_y, xnext,
-				ynext, cube, 0x00FF0000);
-			break;
+		//printf("x = %f | y  = %f\n", xnext, ynext);
+		if (is_a_wall(xnext / SCALE, ynext / SCALE, cube))
+		{
+			ft_draw_line(cube->P_position_x, cube->P_position_y, xnext, ynext, cube, 0x00FF0000);
+			break;	
 		}
-		xnext += xstep;
-		ystep += ystep;
+		else
+		{
+			xnext += xstep;
+			ynext += ystep;
+		}
 	}
-	
 }
 
 void cast_all_ray(t_cube *cube)
@@ -107,8 +114,9 @@ void cast_all_ray(t_cube *cube)
 	i = 0;
 	angle = cube->player->angle - (cube->stable->fov / 2);
 	while (i < cube->stable->num_of_rays)
-	while (i < 1)
+	// while (i < 1)
 	{
+		resize_angle(&angle);
 		cast_horizntal(cube, angle);
 		i++;
 		angle += cube->stable->fov / cube->stable->num_of_rays;

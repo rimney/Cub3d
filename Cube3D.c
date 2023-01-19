@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:03:45 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/18 20:01:05 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/19 17:45:30 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int press_key_hook(int key, t_cube *cube)
 		cube->player->turndirection = -1;
 	else if (key == 124)
 		cube->player->turndirection = 1;
+	else if(key == 53)
+		exit(0);
 	return (0);
 }
 
