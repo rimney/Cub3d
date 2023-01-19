@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing05.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:44:18 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/18 13:27:47 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/19 18:33:38 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	c_is_safe(t_cube *cube, size_t i, size_t j)
 {
-	if(cube->Map[j][i] && cube->Map[j][i] == '0')
+	if(cube->Map[j][i] && (cube->Map[j][i] == '0' || is_a_direction(cube->Map[j][i])))
 	{
 		if(i >= ft_strlen(cube->Map[j - 1]) || (i >= ft_strlen(cube->Map[j + 1])))
 			return (0);
@@ -45,6 +45,27 @@ int	ft_check_header_and_footer(t_cube *cube)
 			i++;
 	}
 	return (1);
+}
+
+int ft_theres_player(t_cube *cube)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while(cube->Map[j])
+	{
+		i = 0;
+		while(cube->Map[j][i])
+		{
+			if(is_a_direction(cube->Map[j][i]))
+				return (1);
+			i++;
+		}
+		j++;
+	}
+	return (0);
 }
 
 int	ft_check_map(t_cube *cube)
@@ -85,14 +106,14 @@ void	ft_get_player_position(t_cube *cube)
 		i = 0;
 		while((size_t)i < ft_strlen(cube->Map[j]))
 		{
-			if(is_a_direction(cube->Map[j][i]) && !cube->P_position_x && !cube->P_position_y)
+			if(is_a_direction(cube->Map[j][i]) && !cube->P_position_x && !cube->P_posotion_y)
 			{
 				cube->Psp = cube->Map[j][i];
 				cube->P_position_x = i;
-				cube->P_position_y = j;
+				cube->P_posotion_y = j;
 				i++;
 			}
-			if(is_a_direction(cube->Map[j][i]) && cube->P_position_x && cube->P_position_y)
+			if(is_a_direction(cube->Map[j][i]) && cube->P_position_x && cube->P_posotion_y)
 				ft_exit("Duplicate Direction");
 			else
 				i++;
@@ -119,7 +140,7 @@ void	ft_get_map(t_cube *cube, char **argv)
 		}
 		free(line);
 	}
-	if(!ft_check_map(cube))
+	if(!ft_check_map(cube) || !ft_theres_player(cube))
 		ft_exit("Map Error !");
 	ft_get_player_position(cube);
 }
