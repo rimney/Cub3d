@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:00:33 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/19 23:14:17 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/21 03:45:22 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	init_const_vr(t_cube *cube)
 	cube->stable->num_of_rays = cube->stable->width;
 }
 
-void ft_init_player(t_cube *cube)
+void	ft_init_player(t_cube *cube)
 {
 	if (cube->Psp == 'S')
 		cube->player->angle = 180 * M_PI / 180;
@@ -46,10 +46,11 @@ void ft_init_player(t_cube *cube)
 	cube->P_position_y = cube->P_position_y * SCALE;
 }
 
-void ft_mlx_init(t_cube *cube)
+void	ft_mlx_init(t_cube *cube)
 {
 	cube->mlx_init = mlx_init();
-	cube->mlx_window = mlx_new_window(cube->mlx_init, cube->stable->width, cube->stable->height, "Cub3D");
+	cube->mlx_window = mlx_new_window(cube->mlx_init, cube->stable->width, \
+	cube->stable->height, "Cub3D");
 }
 
 void	ft_struct_init(char **argv, t_cube *cube)

@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 02:58:41 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/19 23:36:02 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/21 03:42:12 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,25 +45,14 @@ void render_map(t_cube *cube)
 		while (cube->Map[y][x])
 		{
 			if (cube->Map[y][x] == '1')
-				rectengale(x * SCALE, y * SCALE, cube, 0x0040403D);
+				rectengale(x * SCALE, y * SCALE, SCALE, SCALE, cube, 0x0040403D);
 			if (cube->Map[y][x] == '0' || cube->Map[y][x] == 'E' )
-				rectengale(x * SCALE, y * SCALE, cube, 0x00FFFFFF);
+				rectengale(x * SCALE, y * SCALE, SCALE, SCALE, cube, 0x00FFFFFF);
 			x++;
 		}
 		y++;
 	}
 }
-
-void rander_player(t_cube *cube)
-{
-	double x1;
-	double y1;
-
-	x1 = cos(cube->player->angle) * 100;
-	y1 = sin(cube->player->angle) * 100;
-	draw_circle(cube->P_position_x, cube->P_position_y, cube,  0x0FF00000);
-}
-
 
 
 double cast_horizntal(t_cube *cube, double angle)
@@ -140,12 +129,14 @@ double cast_vertical(t_cube *cube, double angle)
 	return (INT_MAX);
 }
 
-void cast_all_ray(t_cube *cube)
+t_ray *cast_all_ray(t_cube *cube)
 {
+	t_ray *rays;
 	double	angle, verdistance, horizdestance;
 	int		i;
 
 	i = 0;
+	rays = malloc(sizeof(t_ray) * cube->stable->num_of_rays + 1);
 	angle = cube->player->angle - (cube->stable->fov / 2);
 	while (i < cube->stable->num_of_rays)
 	{
@@ -153,22 +144,57 @@ void cast_all_ray(t_cube *cube)
 		horizdestance =  cast_horizntal(cube, angle);
 		verdistance =  cast_vertical(cube, angle);
 		if (horizdestance < verdistance)
-			ft_draw_line(cube->P_position_x, cube->P_position_y, cube->player->horizx, cube->player->horizy, cube, 0x00FF0000);
+		{
+			rays[i].raydistance = horizdestance;
+			rays[i].ray_angle = angle;
+			// ft_draw_line(cube->P_position_x, cube->P_position_y, cube->player->horizx, cube->player->horizy, cube, 0x00FF0000);
+		}
 		else
-			ft_draw_line(cube->P_position_x, cube->P_position_y, cube->player->verticalx, cube->player->verticaly, cube, 0x00FF0000);
-			
+		{
+			rays[i].raydistance = verdistance;
+			rays[i].ray_angle = angle;
+			// ft_draw_line(cube->P_position_x, cube->P_position_y, cube->player->verticalx, cube->player->verticaly, cube, 0x00FF0000);
+		}
 		i++;
 		angle += cube->stable->fov / cube->stable->num_of_rays;
+	}
+	return (rays);
+}
+
+void wall_projection(t_cube *cube, t_ray *rays)
+{
+	int i;
+	double plane_projection;
+	double wall_height;
+	double y;
+	
+	i = 0;
+	rectengale(0, 0, cube->stable->width, cube->stable->height / 2, cube, cube->C);
+	rectengale(0, cube->stable->height / 2, cube->stable->width, cube->stable->height / 2, cube, cube->F);
+	while (i < cube->stable->num_of_rays)
+	{
+		rays[i].raydistance = rays[i].raydistance * cos(rays[i].ray_angle - cube->player->angle);
+		plane_projection = (cube->stable->width / 2) / tan(cube->stable->fov / 2);
+		wall_height = (SCALE / rays[i].raydistance) * plane_projection;
+		if(wall_height > cube->stable->height)
+			wall_height = cube->stable->height;
+		y = (cube->stable->height / 2) - (wall_height / 2);
+		rectengale(i, y, 1, wall_height, cube, 0x00FFFFFF);
+		i++;
 	}
 }
 
 int cub_draw(t_cube *cube)
 {
+	t_ray *rays;
 	ft_new_image(cube);
+	// rectengale(cube->stable->width/ 2, cube->stable->height / 2, 32, 32, cube, 0x0ffffff);
+
 	update_player(cube);
-	render_map(cube);
-	cast_all_ray(cube);
-	rander_player(cube);
+	// render_map(cube);
+	rays = cast_all_ray(cube);
+	// rander_player(cube);
+	wall_projection(cube, rays);
 	mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, cube->img->img, 0, 0);
 	mlx_destroy_image(cube->mlx_init, cube->img->img);
 	return (0);
