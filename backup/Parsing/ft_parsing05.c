@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:44:18 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/21 04:04:49 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/18 13:27:47 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	c_is_safe(t_cube *cube, size_t i, size_t j)
 {
-	if(cube->Map[j][i] && (cube->Map[j][i] == '0' || is_a_direction(cube->Map[j][i])))
+	if(cube->Map[j][i] && cube->Map[j][i] == '0')
 	{
 		if(i >= ft_strlen(cube->Map[j - 1]) || (i >= ft_strlen(cube->Map[j + 1])))
 			return (0);
@@ -45,27 +45,6 @@ int	ft_check_header_and_footer(t_cube *cube)
 			i++;
 	}
 	return (1);
-}
-
-int ft_theres_player(t_cube *cube)
-{
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
-	while(cube->Map[j])
-	{
-		i = 0;
-		while(cube->Map[j][i])
-		{
-			if(is_a_direction(cube->Map[j][i]))
-				return (1);
-			i++;
-		}
-		j++;
-	}
-	return (0);
 }
 
 int	ft_check_map(t_cube *cube)
@@ -140,7 +119,7 @@ void	ft_get_map(t_cube *cube, char **argv)
 		}
 		free(line);
 	}
-	if(!ft_check_map(cube) || !ft_theres_player(cube))
+	if(!ft_check_map(cube))
 		ft_exit("Map Error !");
 	ft_get_player_position(cube);
 }

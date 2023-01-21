@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing02.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:42:03 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/27 22:45:33 by rimney           ###   ########.fr       */
+/*   Updated: 2022/12/22 21:42:28 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ int	ft_rgb_check(char *line)
 void	ft_get_C(t_cube *cube, char *line)
 {
 	int i;
-	// int ret;
+	int ret;
 
 	i = 0;
-	// ret = 0;
+	ret = 0;
 	if(cube->files_f[4])
 		ft_exit("Duplicate C RGB!");
 	while(line[i])
@@ -71,9 +71,10 @@ void	ft_get_C(t_cube *cube, char *line)
 void	ft_get_F(t_cube *cube, char *line)
 {
 	int i;
+	int ret;
 
 	i = 0;
-
+	ret = 0;
 	if(cube->files_f[5])
 		ft_exit("Duplicate F RGB!");
 	while(line[i])

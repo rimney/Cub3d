@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/21 04:05:25 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/21 03:40:56 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ typedef	struct	s_cube
 	char	**Map;
 	void	*mlx_init;
 	void	*mlx_window;
-	int		render;
 	t_img	*img;
 	t_player *player;
 	t_const *stable;

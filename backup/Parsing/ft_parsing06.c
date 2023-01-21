@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:44:53 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/21 04:04:49 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/18 13:27:47 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	ft_cube_values_init(t_cube *cube)
 	cube->P_position_x = 0;
 	cube->P_position_y = 0;
 	cube->Map = NULL;
-	cube->render = 0;
 }
 
 
