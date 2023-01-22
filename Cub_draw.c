@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 02:58:41 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/21 03:42:12 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/22 20:04:52 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,16 +169,16 @@ void wall_projection(t_cube *cube, t_ray *rays)
 	double y;
 	
 	i = 0;
-	rectengale(0, 0, cube->stable->width, cube->stable->height / 2, cube, cube->C);
-	rectengale(0, cube->stable->height / 2, cube->stable->width, cube->stable->height / 2, cube, cube->F);
+	rectengale(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT / 2, cube, cube->C);
+	rectengale(0, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT / 2, cube, cube->F);
 	while (i < cube->stable->num_of_rays)
 	{
 		rays[i].raydistance = rays[i].raydistance * cos(rays[i].ray_angle - cube->player->angle);
-		plane_projection = (cube->stable->width / 2) / tan(cube->stable->fov / 2);
+		plane_projection = (WINDOW_WIDTH / 2) / tan(cube->stable->fov / 2);
 		wall_height = (SCALE / rays[i].raydistance) * plane_projection;
-		if(wall_height > cube->stable->height)
-			wall_height = cube->stable->height;
-		y = (cube->stable->height / 2) - (wall_height / 2);
+		if(wall_height > WINDOW_HEIGHT)
+			wall_height = WINDOW_HEIGHT;
+		y = (WINDOW_HEIGHT / 2) - (wall_height / 2);
 		rectengale(i, y, 1, wall_height, cube, 0x00FFFFFF);
 		i++;
 	}

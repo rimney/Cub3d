@@ -6,17 +6,15 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/21 04:05:25 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/22 19:58:30 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE_H
 # define CUBE_H
 # define SCALE 32
-# define UP_KEY 13
-# define LEFT_KEY 123
-# define RIGHT_KEY 124
-# define DOWN_KEY 125
+# define WINDOW_WIDTH 1080
+# define WINDOW_HEIGHT 720
 #include <unistd.h>
 #include <limits.h>
 #include <mlx.h>
