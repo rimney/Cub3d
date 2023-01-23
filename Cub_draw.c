@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cub_draw.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 02:58:41 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/23 15:44:12 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/23 18:19:48 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,14 +160,15 @@ void	render3D(t_cube *cube, t_ray *ray, int i)
 	int wallbottompixel;
 	int distance_top;
 	
+	
 	pdistance = ray[i].raydistance * cos(ray[i].ray_angle - cube->player->angle);
-	dpp = (cube->stable->width / 2) / tan(cube->stable->fov / 2);
+	dpp = (WINDOW_WIDTH / 2) / tan(cube->stable->fov / 2);
 	projectionwallheight = (SCALE / pdistance) * dpp;
 	wallstripeheight = (int)projectionwallheight;
-	walltoppixel = (cube->stable->height / 2) - (wallstripeheight / 2);
+	walltoppixel = (WINDOW_HEIGHT / 2) - (wallstripeheight / 2);
 	walltoppixel =  walltoppixel < 0 ? 0 : walltoppixel;
-	wallbottompixel = (cube->stable->height / 2) + (wallstripeheight / 2);
-	wallbottompixel = wallbottompixel > cube->stable->height ? cube->stable->height : wallbottompixel;
+	wallbottompixel = (WINDOW_HEIGHT / 2) + (wallstripeheight / 2);
+	wallbottompixel = wallbottompixel > WINDOW_HEIGHT ? WINDOW_HEIGHT: wallbottompixel;
 	j = walltoppixel;
 	if(ray[i].is_vertical_hit)
 		cube->texture_offs_x = (int)ray[i].wall_hit_point_y % SCALE;
@@ -175,7 +176,7 @@ void	render3D(t_cube *cube, t_ray *ray, int i)
 		cube->texture_offs_x = (int)ray[i].wall_hit_point_x % SCALE;
 	while(j < wallbottompixel)
 	{
-		distance_top = j + (wallstripeheight / 2) - (cube->stable->height / 2);
+		distance_top = j + (wallstripeheight / 2) - (WINDOW_HEIGHT / 2);
 		cube->texture_offs_y = distance_top * ((float)cube->texture->height / wallstripeheight);
 		cube->texture_color = get_color_from_img(cube->texture, cube->texture_offs_x, cube->texture_offs_y);
 		my_mlx_pixel_put(cube, i, j, cube->texture_color);
@@ -233,8 +234,8 @@ t_ray *cast_all_ray(t_cube *cube)
 void wall_projection(t_cube *cube)
 {
 	
-	rectengale(0, 0, cube->stable->width, cube->stable->height / 2, cube, cube->C);
-	rectengale(0, cube->stable->height / 2, cube->stable->width, cube->stable->height / 2, cube, cube->F);
+	rectengale(0, 0,WINDOW_WIDTH, WINDOW_HEIGHT / 2, cube, cube->C);
+	rectengale(0, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT / 2, cube, cube->F);
 }
 
 int cub_draw(t_cube *cube)

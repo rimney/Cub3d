@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cub3D_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:00:33 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/23 17:40:38 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/23 18:07:17 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	init_const_vr(t_cube *cube)
 	cube->stable->fov = 60 * (M_PI / 180);
 	cube->stable->height = cube->MapHeight * SCALE;
 	cube->stable->width = cube->MapWidth * SCALE;
-	cube->stable->num_of_rays = cube->stable->width;
+	cube->stable->num_of_rays = WINDOW_WIDTH;
 }
 
 void	ft_init_player(t_cube *cube)
@@ -49,8 +49,8 @@ void	ft_init_player(t_cube *cube)
 void	ft_mlx_init(t_cube *cube)
 {
 	cube->mlx_init = mlx_init();
-	cube->mlx_window = mlx_new_window(cube->mlx_init, cube->stable->width, \
-	cube->stable->height, "Cub3D");
+	cube->mlx_window = mlx_new_window(cube->mlx_init, WINDOW_WIDTH, \
+	WINDOW_HEIGHT, "Cub3D");
 }
 
 int	ft_open_file_so(t_cube *cube)
