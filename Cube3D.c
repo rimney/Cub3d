@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cube3D.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:03:45 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/22 17:53:24 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/24 00:31:48 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,10 @@ void	update_player(t_cube *cube)
 	movestep = cube->player->walkdirection * cube->player->movespeed;
 	x = cube->P_position_x + cos(cube->player->angle) * movestep;
 	y = cube->P_position_y + sin(cube->player->angle) * movestep;
-	if (!is_a_wall(x / SCALE, y / SCALE, cube))
-	{
+	if (!is_a_wall(x / SCALE, cube->P_position_y / SCALE, cube))
 		cube->P_position_x = x;
+	if (!is_a_wall(cube->P_position_x / SCALE, y / SCALE, cube))
 		cube->P_position_y = y;
-	}
 	cube->player->angle += cube->player->turndirection * \
 	cube->player->rotationspeed;
 }
