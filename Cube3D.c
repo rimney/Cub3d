@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cube3D.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:03:45 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/21 03:51:35 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/22 17:53:24 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	is_a_wall(int x, int y, t_cube *cube)
 {
 	if (x < 0 || x > cube->stable->width || y < 0 || y > cube->stable->height)
 		return (1);
-	if (x < (double)ft_strlen(cube->Map[y]) && cube->Map[y][x] == '1')
+	if ((size_t)x < ft_strlen(cube->Map[y]) && cube->Map[y][x] == '1')
 		return (1);
 	return (0);
 }

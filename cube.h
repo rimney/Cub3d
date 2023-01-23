@@ -3,16 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/22 19:58:30 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/23 15:39:46 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE_H
 # define CUBE_H
 # define SCALE 32
+# define UP_KEY 13 
+# define LEFT_KEY 123
+# define RIGHT_KEY 124
+# define DOWN_KEY 125
+# define TEX_WIDTH 32
+# define TEX_HEIGHT 32
 # define WINDOW_WIDTH 1080
 # define WINDOW_HEIGHT 720
 #include <unistd.h>
@@ -32,6 +38,8 @@ typedef struct s_img
 	int		bpp;
 	int		size_len;
 	char	*addr;
+	int		width;
+	int		height;
 } t_img;
 
 typedef struct s_player
@@ -55,6 +63,7 @@ typedef struct const_t
 	int		width;
 }	t_const;
 
+
 typedef	struct	s_cube
 {
 	int test;
@@ -64,16 +73,26 @@ typedef	struct	s_cube
 	char	*WE; // 2
 	char	*EA; // 3
 	char	*SO; // 1
+	t_img	*SO_texture;
+	t_img	*NO_texture;
+	t_img	*WE_texture;
+	t_img	*EA_texture;
+	t_img	*texture;
+	
 	int		C; // 4
 	int		F; // 5
 	int		*files_f;
 	int		Psp; // it contains the ascii value of the direction character
 	int		MapHeight;
 	int		MapWidth;
+	int		max_width;
 	char	**Map;
 	void	*mlx_init;
 	void	*mlx_window;
 	int		render;
+	int		texture_offs_x;
+	int		texture_offs_y;
+	int		texture_color;
 	t_img	*img;
 	t_player *player;
 	t_const *stable;
@@ -81,10 +100,13 @@ typedef	struct	s_cube
 
 typedef struct s_ray
 {
-	double raydistance;
-	double xray;
-	double yray;
-	double ray_angle;
+	double	raydistance;
+	double	xray;
+	double	yray;
+	double	ray_angle;
+	int		is_vertical_hit;
+	double	wall_hit_point_x;
+	double	wall_hit_point_y;
 }	t_ray;
 
 /********************** Parsing Functions **********************/

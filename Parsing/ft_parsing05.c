@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing05.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:44:18 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/21 04:04:49 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/23 16:37:38 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	ft_check_header_and_footer(t_cube *cube)
 	int i;
 
 	i = 0;
+	if(!cube->Map)
+		ft_exit("There's no map !!");
 	while(cube->Map[0][i])
 	{
 		if((cube->Map[0][i] != ' ' && cube->Map[0][i] != '1' && cube->Map[0][i] != '\t'))

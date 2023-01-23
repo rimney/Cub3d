@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+         #
+#    By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/17 01:48:17 by rimney            #+#    #+#              #
-#    Updated: 2023/01/21 03:41:13 by mrobaii          ###   ########.fr        #
+#    Updated: 2023/01/22 17:06:15 by rimney           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ LIBFTA = libft/libft.a
 GNL_SRCS = Get_next_line/get_next_line.c \
 			Get_next_line/get_next_line_utils.c \
 		
-MLX = -lmlx -framework OpenGL -framework AppKit
+MLX =  -framework OpenGL -framework AppKit
 CC = cc
 FLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 SRCS = Cube3D.c \
@@ -30,6 +30,8 @@ SRCS = Cube3D.c \
 		Cub3D_init.c \
 		Drawing_utils.c \
 		keys.c \
+		minilibx_opengl_20191021/libmlx.a \
+		
 
 all : $(LIBFTA)
 

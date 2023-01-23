@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing01.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:41:34 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/22 21:42:02 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/23 17:35:05 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,10 @@ int	ft_check_rgb_2(char *line)
 		if(line[i] && line[i] >= '0' && line[i] <= '9')
 		{
 			count++;
-			while(line[i] >= '0' && line[i] <= '9')
+			while(line[i] && line[i] >= '0' && line[i] <= '9')
 				i++;
+			if((size_t)i == ft_strlen(line))
+				return (count);
 		}
 		i++;
 	}
@@ -117,5 +119,7 @@ int	ft_get_rgb(char *line, int i)
 		i++;
 	}
 	free(temp);
+	if(rgb[0] > 255 || rgb[1] > 255 || rgb[2] > 255)
+		ft_exit("Check rgb value !");
 	return ((rgb[0] << 16 | rgb[1] << 8) | rgb[2]);
 }

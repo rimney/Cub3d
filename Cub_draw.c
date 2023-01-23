@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cub_draw.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 02:58:41 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/22 20:04:52 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/23 15:44:12 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,60 @@ double cast_vertical(t_cube *cube, double angle)
 	return (INT_MAX);
 }
 
+// int	get_color(t_img *img)
+// {
+// 	char *buffer;
+// 	int color;
+
+// 	buffer = img->addr + img->width + 
+// }
+
+int	get_color_from_img(t_img *img, int x, int y)
+{
+	char	*dst;
+
+	// if (x < 0 || y < 0 || x > cube->MapWidth || y > cube->MapHeight)
+	// 	ft_error("problem occured in get_color function.");
+	dst = img->addr + (y * img->size_len + x
+			* (img->bpp / 8));
+	return (*(unsigned int *)dst);
+}
+
+
+void	render3D(t_cube *cube, t_ray *ray, int i)
+{
+	int j;
+	double pdistance;
+	double dpp;
+	double projectionwallheight;
+	int wallstripeheight;
+	int walltoppixel;
+	int wallbottompixel;
+	int distance_top;
+	
+	pdistance = ray[i].raydistance * cos(ray[i].ray_angle - cube->player->angle);
+	dpp = (cube->stable->width / 2) / tan(cube->stable->fov / 2);
+	projectionwallheight = (SCALE / pdistance) * dpp;
+	wallstripeheight = (int)projectionwallheight;
+	walltoppixel = (cube->stable->height / 2) - (wallstripeheight / 2);
+	walltoppixel =  walltoppixel < 0 ? 0 : walltoppixel;
+	wallbottompixel = (cube->stable->height / 2) + (wallstripeheight / 2);
+	wallbottompixel = wallbottompixel > cube->stable->height ? cube->stable->height : wallbottompixel;
+	j = walltoppixel;
+	if(ray[i].is_vertical_hit)
+		cube->texture_offs_x = (int)ray[i].wall_hit_point_y % SCALE;
+	else
+		cube->texture_offs_x = (int)ray[i].wall_hit_point_x % SCALE;
+	while(j < wallbottompixel)
+	{
+		distance_top = j + (wallstripeheight / 2) - (cube->stable->height / 2);
+		cube->texture_offs_y = distance_top * ((float)cube->texture->height / wallstripeheight);
+		cube->texture_color = get_color_from_img(cube->texture, cube->texture_offs_x, cube->texture_offs_y);
+		my_mlx_pixel_put(cube, i, j, cube->texture_color);
+		j++;
+	}
+}
+
 t_ray *cast_all_ray(t_cube *cube)
 {
 	t_ray *rays;
@@ -138,63 +192,57 @@ t_ray *cast_all_ray(t_cube *cube)
 	i = 0;
 	rays = malloc(sizeof(t_ray) * cube->stable->num_of_rays + 1);
 	angle = cube->player->angle - (cube->stable->fov / 2);
-	while (i < cube->stable->num_of_rays)
+	while (i < cube->stable->num_of_rays )
 	{
 		resize_angle(&angle);
 		horizdestance =  cast_horizntal(cube, angle);
 		verdistance =  cast_vertical(cube, angle);
 		if (horizdestance < verdistance)
 		{
+			rays[i].wall_hit_point_x = cube->player->horizx;
+			rays[i].wall_hit_point_y =  cube->player->horizy;
 			rays[i].raydistance = horizdestance;
 			rays[i].ray_angle = angle;
+			rays[i].is_vertical_hit = 0;
+			if(rays[i].ray_angle >= 0 &&  rays[i].ray_angle <= M_PI)
+				cube->texture = cube->SO_texture;
+			else
+				cube->texture = cube->NO_texture;
 			// ft_draw_line(cube->P_position_x, cube->P_position_y, cube->player->horizx, cube->player->horizy, cube, 0x00FF0000);
 		}
 		else
 		{
+			rays[i].wall_hit_point_x =  cube->player->verticalx;
+			rays[i].wall_hit_point_y = cube->player->verticaly;
 			rays[i].raydistance = verdistance;
+			rays[i].is_vertical_hit = 1;
 			rays[i].ray_angle = angle;
+			if(rays[i].ray_angle >= M_PI / 2 && rays[i].ray_angle <= 3 * M_PI / 2)
+				cube->texture = cube->WE_texture;
+			else
+				cube->texture = cube->EA_texture;
 			// ft_draw_line(cube->P_position_x, cube->P_position_y, cube->player->verticalx, cube->player->verticaly, cube, 0x00FF0000);
 		}
+		render3D(cube, rays, i);
 		i++;
 		angle += cube->stable->fov / cube->stable->num_of_rays;
 	}
 	return (rays);
 }
 
-void wall_projection(t_cube *cube, t_ray *rays)
+void wall_projection(t_cube *cube)
 {
-	int i;
-	double plane_projection;
-	double wall_height;
-	double y;
 	
-	i = 0;
-	rectengale(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT / 2, cube, cube->C);
-	rectengale(0, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT / 2, cube, cube->F);
-	while (i < cube->stable->num_of_rays)
-	{
-		rays[i].raydistance = rays[i].raydistance * cos(rays[i].ray_angle - cube->player->angle);
-		plane_projection = (WINDOW_WIDTH / 2) / tan(cube->stable->fov / 2);
-		wall_height = (SCALE / rays[i].raydistance) * plane_projection;
-		if(wall_height > WINDOW_HEIGHT)
-			wall_height = WINDOW_HEIGHT;
-		y = (WINDOW_HEIGHT / 2) - (wall_height / 2);
-		rectengale(i, y, 1, wall_height, cube, 0x00FFFFFF);
-		i++;
-	}
+	rectengale(0, 0, cube->stable->width, cube->stable->height / 2, cube, cube->C);
+	rectengale(0, cube->stable->height / 2, cube->stable->width, cube->stable->height / 2, cube, cube->F);
 }
 
 int cub_draw(t_cube *cube)
 {
-	t_ray *rays;
 	ft_new_image(cube);
-	// rectengale(cube->stable->width/ 2, cube->stable->height / 2, 32, 32, cube, 0x0ffffff);
-
 	update_player(cube);
-	// render_map(cube);
-	rays = cast_all_ray(cube);
-	// rander_player(cube);
-	wall_projection(cube, rays);
+	wall_projection(cube);
+	cast_all_ray(cube);
 	mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, cube->img->img, 0, 0);
 	mlx_destroy_image(cube->mlx_init, cube->img->img);
 	return (0);
