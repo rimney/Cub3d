@@ -3,15 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing06.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:44:53 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/21 04:04:49 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/23 20:41:07 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cube.h"
 
+
+int	ft_map_final_check(t_cube *cube)
+{
+	int i;
+	int j;
+
+	i = 1;
+	while(cube->Map[i] && i < cube->MapHeight - 1)
+	{
+		j = 0;
+		while(cube->Map[i][j])
+		{
+			if(cube->Map[i][j] && !is_valid(cube->Map[i][j]) && cube->Map[i][j] != ' ' && cube->Map[i][j] != '\t')
+				return (0);
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
 
 void	ft_cube_values_init(t_cube *cube)
 {

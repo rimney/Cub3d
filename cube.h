@@ -6,7 +6,7 @@
 /*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/23 15:39:46 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/23 22:54:35 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,6 @@ void	ft_parse_map(t_cube *cube, char **argv, char *arg, int i);
 char	is_a_direction(char c);
 int	is_valid(char c);
 int	c_is_safe(t_cube *cube, size_t i, size_t j);
-int	ft_check_header_and_footer(t_cube *cube);
 int	ft_check_map(t_cube *cube);
 void	ft_get_player_position(t_cube *cube);
 void	ft_get_map(t_cube *cube, char **argv);
@@ -161,4 +160,10 @@ void ft_draw_line(int X0, int Y0, int X1, int Y1, t_cube *cube, unsigned int col
 void	draw_circle(int x, int y, t_cube *cube, unsigned int color);
 int release_key_hook(int key, t_cube *cube);
 int press_key_hook(int key, t_cube *cube);
+int ft_count_2d(char **str);
+char	*ft_get_mid_string(char *str, char c);
+char	*ft_strdup_texture(char *str);
+int		ft_check_header_and_footer(char **Map, t_cube *cube);
+int	ft_map_final_check(t_cube *cube);
+int	ft_texture_final_check(char *xpm);
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cub3D_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:00:33 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/23 18:07:17 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/24 00:45:07 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void	ft_init_player(t_cube *cube)
 		cube->player->angle = 270 * M_PI / 180;
 	else
 		cube->player->angle = 90 * M_PI / 180;
-	cube->player->movespeed = 5;
-	cube->player->rotationspeed = 10 * (M_PI / 180);
+	cube->player->movespeed = 2;
+	cube->player->rotationspeed = 1 * (M_PI / 180);
 	cube->player->turndirection = 0;
 	cube->player->walkdirection = 0;
 	cube->P_position_x = cube->P_position_x * SCALE;
@@ -84,7 +84,6 @@ int	ft_open_file_ea(t_cube *cube)
 {
 	int fd;
 	fd = open(cube->EA, O_RDONLY);
-	printf("%d < \n", fd);
 	if(fd == -1)
 		return (0);
 	return (1);	
@@ -120,11 +119,32 @@ char	*ft_strdup_texture(char *str)
 	return (ret);
 }
 
+int	ft_texture_final_check(char *xpm)
+{
+	char **temp;
+
+	temp = ft_split(xpm, ' ');
+	if(ft_count_2d(temp) > 2)
+		ft_exit("texture error\n");
+	if(temp[0])
+	{
+		if(ft_strcmp(temp[0], "NO") != 0 || ft_strcmp(temp[0], "SO") != 0 || ft_strcmp(temp[0], "WE") != 0 || ft_strcmp(temp[0], "EA") != 0)
+		{
+			ft_free_2d(temp);
+			ft_exit("texture error\n");
+		}
+	}
+	ft_free_2d(temp);
+	return (1);
+}
+
 char *ft_get_texture(char *xpm)
 {
 	char **temp;
 	char *t;
 
+	if(!ft_texture_final_check(xpm))
+		return (NULL);
 	t = xpm;
 	temp = ft_split(xpm, ' ');
 	if(!temp[1])
@@ -148,10 +168,10 @@ void	ft_get_textures(t_cube *cube)
 
 void	ft_textures_init(t_cube *cube)
 {
-	if(!ft_check_file_extensions(cube))
-		ft_exit("Please check the extensions\n");
 	if(!ft_open_file_so(cube) || !ft_open_file_ea(cube) || !ft_open_file_we(cube) || !ft_open_file_no(cube)) // must protext the .xpm extention
 		ft_exit("An Error Has Been Occured While Opening the files");
+	if(!ft_check_file_extensions(cube))
+		ft_exit("Please check the extensions\n");
 	cube->SO_texture = malloc(sizeof(t_img));
 	cube->NO_texture = malloc(sizeof(t_img));
 	cube->WE_texture = malloc(sizeof(t_img));
@@ -177,7 +197,8 @@ void	ft_struct_init(char **argv, t_cube *cube)
 	ft_img_init(cube->img);
 	ft_init_player(cube);
 	init_const_vr(cube);
-	ft_get_textures(cube);
+	// ft_get_textures(cube);
+	// exit(0);
 	ft_mlx_init(cube);
 	ft_textures_init(cube);
 }

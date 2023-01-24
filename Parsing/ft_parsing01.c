@@ -6,18 +6,44 @@
 /*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:41:34 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/23 17:35:05 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/23 23:48:04 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cube.h"
 
+int ft_count_2d(char **str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+char	*ft_get_mid_string(char *str, char c)
+{
+	char **temp;
+	char *ret;
+	temp = ft_split(str, c);
+	ft_texture_final_check(str);
+	if(ft_count_2d(temp) > 1)
+	{
+		ret = ft_strdup_texture(temp[1]);
+		ft_free_2d(temp);
+		return (ret);
+	}
+	ft_free_2d(temp);
+	ft_exit("file Error");
+	return (NULL);
+}
+
 void	ft_get_xpms(t_cube *cube, char **argv)
 {
     char	*line;
-
 	int fd;
-
+	int space;
+	
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 	{
@@ -26,13 +52,19 @@ void	ft_get_xpms(t_cube *cube, char **argv)
 	}
 	while((line = get_next_line(fd)))
 	{
-		if(ft_strncmp(line, "NO", 2) == 0)
+		space = 0;
+		if(line[space] == ' ' || line[space] == '\t')
+		{
+			while(line[space] && line[space] == ' ')
+				space++;	
+		}
+		if(ft_strncmp(line + space, "NO", 2) == 0)
 			ft_get_NO(cube, line);
-		else if(ft_strncmp(line, "SO", 2) == 0)
+		else if(ft_strncmp(line + space, "SO", 2) == 0)
 			ft_get_SO(cube, line);
-		else if(ft_strncmp(line, "WE", 2) == 0)
+		else if(ft_strncmp(line + space, "WE", 2) == 0)
 			ft_get_WE(cube, line);
-		else if(ft_strncmp(line, "EA", 2) == 0)
+		else if(ft_strncmp(line + space, "EA", 2) == 0)
 			ft_get_EA(cube, line);
 		free(line);
 	}

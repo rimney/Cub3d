@@ -6,7 +6,7 @@
 /*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:44:18 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/23 16:37:38 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/23 23:41:18 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,38 @@ int	c_is_safe(t_cube *cube, size_t i, size_t j)
 	return (1);
 }
 
-int	ft_check_header_and_footer(t_cube *cube)
+int	ft_check_header_and_footer(char **Map, t_cube *cube)
 {
 	int i;
 
 	i = 0;
-	if(!cube->Map)
+	if(!Map)
 		ft_exit("There's no map !!");
-	while(cube->Map[0][i])
+	while(Map[0][i])
 	{
-		if((cube->Map[0][i] != ' ' && cube->Map[0][i] != '1' && cube->Map[0][i] != '\t'))
+		if((Map[0][i] != ' ' && Map[0][i] != '1' && Map[0][i] != '\t'))
 			return (0);
 		i++;
 	}
 	i = 0;
-	while(cube->Map[cube->MapHeight - 1][i])
+	while(Map[cube->MapHeight - 1][i])
 	{
-		if(cube->Map[cube->MapHeight - 1][i] != '1' && cube->Map[cube->MapHeight - 1][i] != ' ' && cube->Map[cube->MapHeight - 1][i] != '\t')
+		if(Map[cube->MapHeight - 1][i] != '1' && Map[cube->MapHeight - 1][i] != ' ' && Map[cube->MapHeight - 1][i] != '\t')
 			return (0);
 			i++;
 	}
+	return (1);
+}
+
+int	player_is_safe(char **Map, int x, int y)
+{
+	if((size_t)x >= ft_strlen(Map[y - 1]) || ((size_t)x >= ft_strlen(Map[y + 1])))
+			return (0);
+	else if((!is_valid(Map[y][x + 1])) || (!is_valid(Map[y + 1][x])))
+			return (0);
+	else if((!is_valid(Map[y][x - 1])) || (!is_valid(Map[y - 1][x])))
+			return (0);
+	// exit(0);
 	return (1);
 }
 
@@ -61,7 +73,7 @@ int ft_theres_player(t_cube *cube)
 		i = 0;
 		while(cube->Map[j][i])
 		{
-			if(is_a_direction(cube->Map[j][i]))
+			if(is_a_direction(cube->Map[j][i]) && player_is_safe(cube->Map, i, j))
 				return (1);
 			i++;
 		}
@@ -77,8 +89,10 @@ int	ft_check_map(t_cube *cube)
 
 	j = 1;
 	i = 0;
-	if(!ft_check_header_and_footer(cube))
+	if(!ft_check_header_and_footer(cube->Map, cube))
+	{
 		return (0);
+	}
 	while (cube->Map[j] && (int)j < cube->MapHeight)
 	{
 		i = 0;
@@ -91,6 +105,7 @@ int	ft_check_map(t_cube *cube)
 			}
 			i++;
 		}
+		
 		j++;
 	}
 	return (1);
@@ -142,7 +157,9 @@ void	ft_get_map(t_cube *cube, char **argv)
 		}
 		free(line);
 	}
-	if(!ft_check_map(cube) || !ft_theres_player(cube))
+	if(!ft_check_map(cube) || !ft_theres_player(cube) || !ft_map_final_check(cube))
+	{
 		ft_exit("Map Error !");
+	}
 	ft_get_player_position(cube);
 }

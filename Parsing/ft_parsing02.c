@@ -6,7 +6,7 @@
 /*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:42:03 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/27 22:45:33 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/23 23:36:04 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,29 @@ int	ft_rgb_check(char *line)
 	return (1);
 }
 
+int	ft_cf_last_check(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if(!((str[i] >= '0' && str[i] <= '9') || str[i] == ',' || str[i] == 'C' || str[i] == 'F' || str[i] == ' ' || str[i] == '\n'))
+		{
+			ft_exit("CF Error !");
+		}
+		i++;
+	}
+	return (1);
+
+}
+
 void	ft_get_C(t_cube *cube, char *line)
 {
 	int i;
-	// int ret;
 
 	i = 0;
-	// ret = 0;
+	ft_cf_last_check(line);
 	if(cube->files_f[4])
 		ft_exit("Duplicate C RGB!");
 	while(line[i])
@@ -74,6 +90,7 @@ void	ft_get_F(t_cube *cube, char *line)
 
 	i = 0;
 
+	ft_cf_last_check(line);
 	if(cube->files_f[5])
 		ft_exit("Duplicate F RGB!");
 	while(line[i])
@@ -92,19 +109,26 @@ void	ft_get_CF(t_cube *cube, char **argv)
 {
 	int		fd;
 	char	*line;
-
+	int		space;
 	fd = open(argv[1], O_RDONLY);
 	(void)cube;
 	while((line = get_next_line(fd)))
 	{
-		if(ft_strncmp(line, "C", 1) == 0)
+		space = 0;
+		if(line[0] == ' ' || line[0] == '\t')
 		{
-			ft_get_C(cube, line);
+			while(line[space] && line[space] == ' ')
+				space++;
+		}
+		if(ft_strncmp(line + space, "C", 1) == 0)
+		{
+			ft_get_C(cube, line + space);
 			cube->files_f[4] = 1;
 		}
-		else if(ft_strncmp(line, "F", 1) == 0)
+		else if(ft_strncmp(line + space, "F", 1) == 0)
 		{
-			ft_get_F(cube, line);
+			
+			ft_get_F(cube, line + space);
 			cube->files_f[5] = 1;
 		}
 		free(line);

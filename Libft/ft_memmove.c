@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 23:46:21 by rimney            #+#    #+#             */
-/*   Updated: 2021/11/14 23:56:27 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/23 23:35:22 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,15 @@ size_t  src_len(const unsigned char *src)
 
 void    *ft_memmove(void *dst, const void *src, size_t n)
 {
-        //size_t                        rev_src;
-        //size_t                        rev_dst;
         unsigned char    *s;
         unsigned char           *d;
 
         d = (unsigned char *)dst;
         s = (unsigned char *)src;
         n--;
-        //rev_src = src_len(s);
-        //rev_dst = src_len(d);
-        //n =- 1;
         while (n > 0)
         {
-                        //printf("%c\n", s[rev_src]);
                         d[n] = s[n];
-                //rev_dst--;
-                //rev_src--;
                 n--;
         }
         d[n] = s[n];

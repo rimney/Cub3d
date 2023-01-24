@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cube3D.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:03:45 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/24 00:31:48 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/24 01:12:57 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	main(int argc, char **argv)
 		exit(0);
 	}
 	ft_struct_init(argv, cube);
-	ft_print_cube(cube);
 	cub_draw(cube);
 	mlx_hook(cube->mlx_window, 02, (1L << 0), press_key_hook, cube);
 	mlx_hook(cube->mlx_window, 03, (1L << 1), release_key_hook, cube);
