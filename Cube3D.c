@@ -6,7 +6,7 @@
 /*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:03:45 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/24 01:12:57 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/24 02:50:16 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	is_a_wall(int x, int y, t_cube *cube)
 {
 	if (x < 0 || x > cube->stable->width || y < 0 || y > cube->stable->height)
 		return (1);
-	if ((size_t)x < ft_strlen(cube->Map[y]) && cube->Map[y][x] == '1')
+	if ((size_t)x < ft_strlen(cube->map[y]) && cube->map[y][x] == '1')
 		return (1);
 	return (0);
 }
@@ -28,12 +28,12 @@ void	update_player(t_cube *cube)
 	double	y;
 
 	movestep = cube->player->walkdirection * cube->player->movespeed;
-	x = cube->P_position_x + cos(cube->player->angle) * movestep;
-	y = cube->P_position_y + sin(cube->player->angle) * movestep;
-	if (!is_a_wall(x / SCALE, cube->P_position_y / SCALE, cube))
-		cube->P_position_x = x;
-	if (!is_a_wall(cube->P_position_x / SCALE, y / SCALE, cube))
-		cube->P_position_y = y;
+	x = cube->p_position_x + cos(cube->player->angle) * movestep;
+	y = cube->p_position_y + sin(cube->player->angle) * movestep;
+	if (!is_a_wall(x / SCALE, cube->p_position_y / SCALE, cube))
+		cube->p_position_x = x;
+	if (!is_a_wall(cube->p_position_x / SCALE, y / SCALE, cube))
+		cube->p_position_y = y;
 	cube->player->angle += cube->player->turndirection * \
 	cube->player->rotationspeed;
 }

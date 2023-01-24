@@ -6,7 +6,7 @@
 #    By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/17 01:48:17 by rimney            #+#    #+#              #
-#    Updated: 2023/01/22 17:06:15 by rimney           ###   ########.fr        #
+#    Updated: 2023/01/24 03:30:19 by rimney           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,11 @@ SRCS = Cube3D.c \
 		parsing/ft_parsing04.c \
 		parsing/ft_parsing05.c \
 		parsing/ft_parsing06.c \
+		parsing/ft_parsing07.c \
+		parsing/ft_parsing08.c \
+		parsing/ft_parsing09.c \
+		parsing/ft_parsing10.c \
+		parsing/ft_parsing11.c \
 		Cub_draw.c \
 		Cub3D_init.c \
 		Drawing_utils.c \
