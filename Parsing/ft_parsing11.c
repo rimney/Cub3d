@@ -6,7 +6,7 @@
 /*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:34 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/24 03:36:37 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/24 18:06:17 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,27 @@ void	ft_assign_data(t_cube *cube)
 			cube->ea, &cube->ea_texture->width, &cube->ea_texture->height);
 }
 
+int	ft_check_addr(t_cube *cube)
+{
+	if (!cube->so_texture->img)
+		return (0);
+	else if (!cube->no_texture->img)
+		return (0);
+	else if (!cube->we_texture->img)
+		return (0);
+	else if (!cube->ea_texture->img)
+		return (0);
+	return (1);
+}
+
 void	ft_assign_addr(t_cube *cube)
 {
+	if (!ft_check_addr(cube))
+		ft_exit("Xpm Error");
 	cube->so_texture->addr
 		= mlx_get_data_addr(cube->so_texture->img,
 			&cube->so_texture->bpp, &cube->so_texture->size_len,
-			&cube->so_texture->endian);		
+			&cube->so_texture->endian);
 	cube->no_texture->addr
 		= mlx_get_data_addr(cube->no_texture->img,
 			&cube->no_texture->bpp,
@@ -58,7 +73,7 @@ void	ft_assign_addr(t_cube *cube)
 		= mlx_get_data_addr(cube->ea_texture->img,
 			&cube->ea_texture->bpp,
 			&cube->ea_texture->size_len,
-			&cube->ea_texture->endian);			
+			&cube->ea_texture->endian);
 }
 
 void	ft_textures_init(t_cube *cube)
