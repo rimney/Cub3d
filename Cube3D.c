@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:03:45 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/25 02:01:48 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/25 02:40:57 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,12 @@ void	update_player(t_cube *cube)
 	cube->player->rotationspeed;
 }
 
+int	close_x(void)
+{
+	exit(0);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_cube	*cube;
@@ -76,6 +82,7 @@ int	main(int argc, char **argv)
 	mlx_hook(cube->mlx_window, 02, (1L << 0), press_key_hook, cube);
 	mlx_hook(cube->mlx_window, 03, (1L << 1), release_key_hook, cube);
 	mlx_loop_hook(cube->mlx_init, cub_draw, cube);
+	mlx_hook(cube->mlx_window, 17, 0, close_x, cube);
 	mlx_loop(cube->mlx_init);
 	ft_free_parsing(cube);
 }
