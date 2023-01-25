@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 18:54:14 by rimney            #+#    #+#             */
-/*   Updated: 2021/11/13 01:03:43 by rimney           ###   ########.fr       */
+/*   Updated: 2021/11/12 16:47:41 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
-
-char add(unsigned int i, char c)
-{
-	i++;
-	printf("%d", i);
-	return(c);
-}
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
@@ -39,12 +31,3 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	str[i] = '\0';
 	return (str);
 }
-
-int	main()
-{
-	char *z = "ABC";
-	char *ret = ft_strmapi(z, add);
-	printf("%s", ret);
-	return (0);
-}
-

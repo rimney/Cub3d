@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing06.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:44:53 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/24 03:06:52 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/25 02:26:11 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,16 @@ void	ft_free_parsing(t_cube *cube)
 	free(cube->ea);
 	if (cube->mapwidth)
 		ft_free_2d(cube->map);
+	free(cube->img);
+	free(cube->player);
+	free(cube->stable);
+	free(cube->so_texture);
+	free(cube->no_texture);
+	free(cube->we_texture);
+	free(cube->ea_texture);
+	free(cube->texture);
 	free(cube);
+	system("leaks Cub3d");
 	cube = NULL;
 }
 
@@ -71,4 +80,9 @@ void	ft_print(char *str, char *s)
 		i++;
 	}
 	printf("\n");
+}
+
+char	is_a_direction(char c)
+{
+	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }

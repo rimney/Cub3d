@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 18:37:57 by rimney            #+#    #+#             */
-/*   Updated: 2021/11/18 22:05:07 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/25 02:13:14 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,83 +14,81 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-
-
-char    *ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *s, int c)
 {
-    while (*s && *s != (char)c)
-        s++;
-    if (*s == (char)c)
-        return ((char *)s);
-    return (0);
+	while (*s && *s != (char)c)
+		s++;
+	if (*s == (char)c)
+		return ((char *)s);
+	return (0);
 }
 
-void    ft_free(char **str)
+void	ft_free(char **str)
 {
-    free(*str);
-    *str = NULL;
+	free(*str);
+	*str = NULL;
 }
 
-void    ft_get_line(char **rest, char **line)
+void	ft_get_line(char **rest, char **line)
 {
-    int        i;
-    char     *temp;
+	int			i;
+	char		*temp;
 
-    i = 0;
-    while ((*rest)[i] != '\n' && (*rest)[i] != '\0')
-        i++;
-    if ((*rest)[i] == '\n')
-    {
-        *line = ft_substr(*rest, 0, ++i);
-        temp = *rest;
-        *rest = ft_strdup(*rest + i);
-        ft_free(&temp);
-    }
-    else
+	i = 0;
+	while ((*rest)[i] != '\n' && (*rest)[i] != '\0')
+		i++;
+	if ((*rest)[i] == '\n')
 	{
-        *line = ft_strdup(*rest);
-    	ft_free(rest);
+		*line = ft_substr(*rest, 0, ++i);
+		temp = *rest;
+		*rest = ft_strdup(*rest + i);
+		ft_free(&temp);
 	}
-    if ((*line)[0] == '\0')
-        ft_free(line);
+	else
+	{
+		*line = ft_strdup(*rest);
+		ft_free(rest);
+	}
+	if ((*line)[0] == '\0')
+		ft_free(line);
 }
 
-void    ft_read(int fd, char **rest, char **line, char **buf)
+void	ft_read(int fd, char **rest, char **line, char **buf)
 {
-    ssize_t    ret;
-    char    *temp;
+	ssize_t	ret;
+	char	*temp;
 
-    ret = 1;
-    while (ret && !ft_strchr(*rest, '\n'))
-    {
-        ret = read(fd, *buf, BUFFER_SIZE);
-        (*buf)[ret] = '\0';
-        temp = *rest;
-        *rest = ft_strjoin(temp, *buf);
-        ft_free(&temp);
-    }
-    ft_free(buf);
-    ft_get_line(rest, line);
+	ret = 1;
+	while (ret && !ft_strchr(*rest, '\n'))
+	{
+		ret = read(fd, *buf, BUFFER_SIZE);
+		(*buf)[ret] = '\0';
+		temp = *rest;
+		*rest = ft_strjoin(temp, *buf);
+		ft_free(&temp);
+	}
+	ft_free(buf);
+	ft_get_line(rest, line);
 }
 
-char    *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-    static char    *rest;
-    char        *line;
-    char        *buf;
+	static char	*rest;
+	char		*line;
+	char		*buf;
 
-    if (fd < 0 || BUFFER_SIZE <= 0)
-        return (NULL);
-    buf = (char *)malloc(sizeof(*buf) * (BUFFER_SIZE + 1));
-    if (!buf)
-        return (NULL);
-    if (read(fd, buf, 0) < 0)
-    {
-        ft_free(&buf);
-        return (NULL);
-    }
-    if (!rest)
-        rest = ft_strdup("");
-    ft_read(fd, &rest, &line, &buf);
-    return (line);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	buf = (char *)malloc(sizeof(*buf) * (BUFFER_SIZE + 1));
+	if (!buf)
+		return (NULL);
+	if (read(fd, buf, 0) < 0)
+	{
+		ft_free(&buf);
+		return (NULL);
+	}
+	if (!rest)
+		rest = ft_strdup("");
+	ft_read(fd, &rest, &line, &buf);
+	return (line);
 }

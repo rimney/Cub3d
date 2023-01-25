@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing10.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:27:47 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/24 03:28:29 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/25 01:48:25 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,30 @@ char	*ft_get_texture(char *xpm)
 	return (xpm);
 }
 
-void	ft_get_textures(t_cube *cube)
+int	ft_check_map(t_cube *cube)
 {
-	cube->no = ft_get_texture(cube->no);
-	cube->so = ft_get_texture(cube->so);
-	cube->we = ft_get_texture(cube->we);
-	cube->ea = ft_get_texture(cube->ea);	
+	size_t	i;
+	size_t	j;
+
+	j = 1;
+	i = 0;
+	if (!ft_check_header_and_footer(cube->map, cube))
+	{
+		return (0);
+	}
+	while (cube->map[j] && (int)j < cube->mapheight)
+	{
+		i = 0;
+		while (cube->map[j][i] && i < ft_strlen(cube->map[j]))
+		{
+			if (cube->map[j][i] && cube->map[j][i] == '0')
+			{
+				if (!c_is_safe(cube, i, j))
+					return (0);
+			}
+			i++;
+		}
+		j++;
+	}
+	return (1);
 }

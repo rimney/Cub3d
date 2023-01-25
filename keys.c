@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 03:38:39 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/25 02:12:48 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/25 02:25:28 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ int	press_key_hook(int key, t_cube *cube)
 	else if (key == 124)
 		cube->player->turndirection = 1;
 	else if (key == 53)
+	{
 		exit(0);
+	}
 	else if (key == 0)
 	{
 		cube->player->flag = 1;

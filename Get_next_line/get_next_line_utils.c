@@ -6,12 +6,13 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 17:19:58 by rimney            #+#    #+#             */
-/*   Updated: 2022/12/22 20:52:33 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/25 02:10:41 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "../libft/libft.h"
+
 char	*ft_strdup(const char *s1)
 {
 	int		i;
@@ -54,7 +55,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		i++;
 	}
 	str[i] = '\0';
-
 	return (str);
 }
 
@@ -69,13 +69,11 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	s_len = ft_strlen(s);
 	if (s_len < start)
 	{
-		if (!(substr = malloc(sizeof(char) * 1)))
-			return (NULL);
+		substr = malloc(sizeof(char) * 1);
 		substr[0] = '\0';
 		return (substr);
 	}
-	if (!(substr = malloc(sizeof(char) * (len + 1))))
-		return (NULL);
+	substr = malloc(sizeof(char) * (len + 1));
 	i = 0;
 	while (i < len)
 	{

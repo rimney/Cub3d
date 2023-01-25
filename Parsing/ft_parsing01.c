@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing01.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:41:34 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/24 03:10:03 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/25 01:57:17 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	ft_get_xpms(t_cube *cube, char **argv)
 		if (line[space] == ' ' || line[space] == '\t')
 		{
 			while (line[space] && line[space] == ' ')
-				space++;	
+				space++;
 		}
 		ft_get_xpms_norm(cube, line, space);
 		free(line);

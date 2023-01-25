@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing11.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:34 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/24 18:06:17 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/25 01:46:13 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	ft_allocate_textures(t_cube *cube)
 	cube->no_texture = malloc(sizeof(t_img));
 	cube->we_texture = malloc(sizeof(t_img));
 	cube->ea_texture = malloc(sizeof(t_img));
-	cube->texture = malloc(sizeof(t_img));
 }
 
 void	ft_assign_data(t_cube *cube)
@@ -64,11 +63,11 @@ void	ft_assign_addr(t_cube *cube)
 		= mlx_get_data_addr(cube->no_texture->img,
 			&cube->no_texture->bpp,
 			&cube->no_texture->size_len,
-			&cube->no_texture->endian);		
+			&cube->no_texture->endian);
 	cube->we_texture->addr
 		= mlx_get_data_addr(cube->we_texture->img,
 			&cube->we_texture->bpp, &cube->we_texture->size_len,
-			&cube->we_texture->endian);		
+			&cube->we_texture->endian);
 	cube->ea_texture->addr
 		= mlx_get_data_addr(cube->ea_texture->img,
 			&cube->ea_texture->bpp,

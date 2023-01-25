@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing05.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 21:44:18 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/24 03:14:58 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/25 01:50:57 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,34 +91,6 @@ int	ft_theres_player(t_cube *cube)
 	return (0);
 }
 
-int	ft_check_map(t_cube *cube)
-{
-	size_t	i;
-	size_t	j;
-
-	j = 1;
-	i = 0;
-	if (!ft_check_header_and_footer(cube->map, cube))
-	{
-		return (0);
-	}
-	while (cube->map[j] && (int)j < cube->mapheight)
-	{
-		i = 0;
-		while (cube->map[j][i] && i < ft_strlen(cube->map[j]))
-		{
-			if (cube->map[j][i] && cube->map[j][i] == '0')
-			{
-				if (!c_is_safe(cube, i, j))
-					return (0);
-			}
-			i++;
-		}
-		j++;
-	}
-	return (1);
-}
-
 void	ft_get_player_position(t_cube *cube)
 {
 	int	i;
@@ -139,13 +111,11 @@ void	ft_get_player_position(t_cube *cube)
 				cube->p_position_y = j;
 				i++;
 			}
-			if (is_a_direction(cube->map[j][i])
+			else if (is_a_direction(cube->map[j][i])
 				&& cube->p_position_x && cube->p_position_y)
 				ft_exit("Duplicate Direction");
-			else
-				i++;
+			i++;
 		}
 		j++;
 	}
 }
-

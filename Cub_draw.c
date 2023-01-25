@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cub_draw.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 02:58:41 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/25 01:04:29 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/25 02:21:47 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	distance_check(t_ray *rays, t_cube *cube, t_casting *cast, int i)
 	}
 }
 
-t_ray	*cast_all_ray(t_cube *cube)
+void	cast_all_ray(t_cube *cube)
 {
 	t_ray		*rays;
 	t_casting	cast;
@@ -108,5 +108,5 @@ t_ray	*cast_all_ray(t_cube *cube)
 		i++;
 		cast.angle += cube->stable->fov / cube->stable->num_of_rays;
 	}
-	return (rays);
+	free(rays);
 }

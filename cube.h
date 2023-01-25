@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/25 01:58:11 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/25 02:32:42 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@
 
 typedef struct s_render
 {
-	double pdistance;
-	double dpp;
-	double projectionwallheight;
-	int wallstripeheight;
-	int wallt;
-	int wallb;
-	int distance_top;
+	double	pdistance;
+	double	dpp;
+	double	projectionwallheight;
+	int		wallstripeheight;
+	int		wallt;
+	int		wallb;
+	int		distance_top;
 }	t_render;
 
 typedef struct s_casting
@@ -88,7 +88,7 @@ typedef struct const_t
 	int		width;
 }	t_const;
 
-typedef struct	s_cube
+typedef struct s_cube
 {
 	double		p_position_x;
 	double		p_position_y;
@@ -171,17 +171,12 @@ void	ft_init_player(t_cube *cube);
 void	ft_img_init(t_img *img);
 void	ft_mlx_init(t_cube *cube);
 void	my_mlx_pixel_put(t_cube *cube, int x, int y, int color);
-void	rectengale(int x, int y, int x1, int y1,
-			t_cube *cube, unsigned int color);
 void	render_map(t_cube *cube);
 int		cub_draw(t_cube *cube);
 void	update_player(t_cube *cube);
 void	init_const_vr(t_cube *cube);
 int		is_a_wall(int x, int y, t_cube *cube);
 void	ft_new_image(t_cube *cube);
-void	ft_draw_line(int X0, int Y0, int X1, int Y1,
-			t_cube *cube, unsigned int color);
-void	draw_circle(int x, int y, t_cube *cube, unsigned int color);
 int		release_key_hook(int key, t_cube *cube);
 int		press_key_hook(int key, t_cube *cube);
 int		ft_count_2d(char **str);
@@ -201,11 +196,11 @@ int		ft_texture_final_check(char *xpm);
 char	*ft_get_texture(char *xpm);
 void	ft_get_textures(t_cube *cube);
 void	ft_textures_init(t_cube *cube);
-int	is_down(double angle);
-int	is_right(double angle);
+int		is_down(double angle);
+int		is_right(double angle);
 void	resize_angle(double *angle);
 void	floor_ceeling_render(t_cube *cube);
-t_ray	*cast_all_ray(t_cube *cube);
+void	cast_all_ray(t_cube *cube);
 double	cast_horizntal(t_cube *cube, double angle);
 double	cast_vertical(t_cube *cube, double angle);
 #endif
