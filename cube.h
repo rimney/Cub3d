@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/25 02:32:42 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/25 04:51:27 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,4 +203,5 @@ void	floor_ceeling_render(t_cube *cube);
 void	cast_all_ray(t_cube *cube);
 double	cast_horizntal(t_cube *cube, double angle);
 double	cast_vertical(t_cube *cube, double angle);
+int		ft_check_extension(char **argv);
 #endif

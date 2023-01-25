@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cube3D.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:03:45 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/25 02:40:57 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/25 04:45:16 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ int	main(int argc, char **argv)
 		printf("Check the args !\n");
 		exit(0);
 	}
+	if (!ft_check_extension(argv))
+		ft_exit("please check the extension name");
 	ft_struct_init(argv, cube);
 	cub_draw(cube);
 	mlx_hook(cube->mlx_window, 02, (1L << 0), press_key_hook, cube);

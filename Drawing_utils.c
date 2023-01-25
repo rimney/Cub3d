@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Drawing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 18:51:48 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/25 01:04:06 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/25 04:45:28 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,11 @@ void	floor_ceeling_render(t_cube *cube)
 		}
 		i++;
 	}
+}
+
+int	ft_check_extension(char **argv)
+{
+	if (ft_strncmp(ft_strrchr(argv[1], '.'), ".cub", 4) == 0)
+		return (1);
+	return (0);
 }

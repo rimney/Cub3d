@@ -6,7 +6,7 @@
 #    By: rimney <rimney@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/17 01:48:17 by rimney            #+#    #+#              #
-#    Updated: 2023/01/25 02:21:02 by rimney           ###   ########.fr        #
+#    Updated: 2023/01/25 04:49:54 by rimney           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ GNL_SRCS = Get_next_line/get_next_line.c \
 		
 MLX =  -lmlx -framework OpenGL -framework AppKit
 CC = cc
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror -g # -fsanitize=address
 SRCS = Cube3D.c \
 		parsing/ft_parsing00.c \
 		parsing/ft_parsing01.c \
