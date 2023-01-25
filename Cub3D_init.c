@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cub3D_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:00:33 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/24 03:37:02 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/24 22:50:37 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void	ft_init_player(t_cube *cube)
 		cube->player->angle = 270 * M_PI / 180;
 	else
 		cube->player->angle = 90 * M_PI / 180;
-	cube->player->movespeed = 2;
-	cube->player->rotationspeed = 1 * (M_PI / 180);
+	cube->player->movespeed = 4;
+	cube->player->rotationspeed = 4 * (M_PI / 180);
 	cube->player->turndirection = 0;
 	cube->player->walkdirection = 0;
 	cube->p_position_x = cube->p_position_x * SCALE;

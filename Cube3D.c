@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cube3D.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:03:45 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/24 02:50:16 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/25 00:37:12 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,18 @@ int	is_a_wall(int x, int y, t_cube *cube)
 		return (1);
 	if ((size_t)x < ft_strlen(cube->map[y]) && cube->map[y][x] == '1')
 		return (1);
+	return (0);
+}
+
+int	cub_draw(t_cube *cube)
+{
+	ft_new_image(cube);
+	update_player(cube);
+	floor_ceeling_render(cube);
+	cast_all_ray(cube);
+	mlx_put_image_to_window(cube->mlx_init, cube->mlx_window, \
+	cube->img->img, 0, 0);
+	mlx_destroy_image(cube->mlx_init, cube->img->img);
 	return (0);
 }
 

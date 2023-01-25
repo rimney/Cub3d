@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+         #
+#    By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/17 01:48:17 by rimney            #+#    #+#              #
-#    Updated: 2023/01/24 03:30:19 by rimney           ###   ########.fr        #
+#    Updated: 2023/01/24 23:56:01 by mrobaii          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,8 @@ SRCS = Cube3D.c \
 		Drawing_utils.c \
 		keys.c \
 		minilibx_opengl_20191021/libmlx.a \
+		angles_direction.c \
+		ray_casting.c \
 		
 
 all : $(LIBFTA)

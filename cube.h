@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/24 03:30:56 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/25 00:47:49 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,30 @@
 # include "libft/libft.h"
 # include "Get_next_line/get_next_line.h"
 # include <math.h>
+
+typedef struct s_render
+{
+	double pdistance;
+	double dpp;
+	double projectionwallheight;
+	int wallstripeheight;
+	int wallt;
+	int wallb;
+	int distance_top;
+}	t_render;
+
+typedef struct s_casting
+{
+	double	xstep;
+	double	ystep;
+	double	xintercept;
+	double	xnext;
+	double	ynext;
+	double	yintercept;
+	double	angle;
+	double	verdistance;
+	double	horizdestance;
+}	t_casting;
 
 typedef struct s_img
 {
@@ -176,4 +200,11 @@ int		ft_texture_final_check(char *xpm);
 char	*ft_get_texture(char *xpm);
 void	ft_get_textures(t_cube *cube);
 void	ft_textures_init(t_cube *cube);
+int	is_down(double angle);
+int	is_right(double angle);
+void	resize_angle(double *angle);
+void	floor_ceeling_render(t_cube *cube);
+t_ray	*cast_all_ray(t_cube *cube);
+double	cast_horizntal(t_cube *cube, double angle);
+double	cast_vertical(t_cube *cube, double angle);
 #endif

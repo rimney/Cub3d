@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 03:38:39 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/24 01:31:59 by rimney           ###   ########.fr       */
+/*   Updated: 2023/01/25 00:38:30 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	press_key_hook(int key, t_cube *cube)
 {
-	if (key == 13  || key == 126)
+	if (key == 13 || key == 126)
 		cube->player->walkdirection = +1;
 	else if (key == 1 || key == 125)
 		cube->player->walkdirection = -1;

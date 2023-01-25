@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 18:51:48 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/23 18:19:33 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/25 01:04:06 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,39 @@ void	my_mlx_pixel_put(t_cube *cube, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	rectengale(int x, int y, int x1, int y1, t_cube *cube, unsigned int color)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < y1)
-	{
-		j = 0;
-		while (j < x1)
-		{
-			my_mlx_pixel_put(cube, j + x, i + y, color);
-			j++;
-		}
-		i++;
-	}
-}
-
 void	ft_new_image(t_cube *cube)
 {
 	cube->img->img = mlx_new_image(cube->mlx_init, WINDOW_WIDTH, \
 	WINDOW_HEIGHT);
 	cube->img->addr = mlx_get_data_addr(cube->img->img, &cube->img->bpp, \
 	&cube->img->size_len, &cube->img->endian);
+}
+
+void	floor_ceeling_render(t_cube *cube)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < WINDOW_HEIGHT / 2)
+	{
+		j = 0;
+		while (j < WINDOW_WIDTH)
+		{
+			my_mlx_pixel_put(cube, j, i, cube->c);
+			j++;
+		}
+		i++;
+	}
+	i = 0;
+	while (i < WINDOW_HEIGHT / 2)
+	{
+		j = 0;
+		while (j < WINDOW_WIDTH)
+		{
+			my_mlx_pixel_put(cube, j, i + WINDOW_HEIGHT / 2, cube->f);
+			j++;
+		}
+		i++;
+	}
 }
