@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 03:03:45 by mrobaii           #+#    #+#             */
-/*   Updated: 2023/01/25 00:37:12 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/25 02:01:48 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,16 @@ void	update_player(t_cube *cube)
 	double	y;
 
 	movestep = cube->player->walkdirection * cube->player->movespeed;
-	x = cube->p_position_x + cos(cube->player->angle) * movestep;
-	y = cube->p_position_y + sin(cube->player->angle) * movestep;
+	if (cube->player->flag == 1)
+	{
+		x = cube->p_position_x + cos(cube->player->angle + M_PI / 2) * movestep;
+		y = cube->p_position_y + sin(cube->player->angle + M_PI / 2) * movestep;
+	}
+	else
+	{
+		x = cube->p_position_x + cos(cube->player->angle) * movestep;
+		y = cube->p_position_y + sin(cube->player->angle) * movestep;
+	}
 	if (!is_a_wall(x / SCALE, cube->p_position_y / SCALE, cube))
 		cube->p_position_x = x;
 	if (!is_a_wall(cube->p_position_x / SCALE, y / SCALE, cube))

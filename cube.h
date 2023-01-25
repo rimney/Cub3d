@@ -6,7 +6,7 @@
 /*   By: mrobaii <mrobaii@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 01:30:45 by rimney            #+#    #+#             */
-/*   Updated: 2023/01/25 00:47:49 by mrobaii          ###   ########.fr       */
+/*   Updated: 2023/01/25 01:58:11 by mrobaii          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_player
 	double	verticaly;
 	double	horizx;
 	double	horizy;
+	int		flag;
 }	t_player;
 
 typedef struct const_t
